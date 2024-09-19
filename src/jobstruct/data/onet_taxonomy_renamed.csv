@@ -1,0 +1,88 @@
+﻿Element ID,Element Name,Renamed,Description
+2,Worker Requirements,,Worker Requirements
+2.A,Basic Skills,,Developed capacities that facilitate learning or the more rapid acquisition of knowledge
+2.A.1,Content,,Background structures needed to work with and acquire more specific skills in a variety of different domains
+2.A.1.a,Reading Comprehension,Reading,Understanding written sentences and paragraphs in work-related documents.
+2.A.1.b,Active Listening,Listening,"Giving full attention to what other people are saying, taking time to understand the points being made, asking questions as appropriate, and not interrupting at inappropriate times."
+2.A.1.c,Writing,Writing,Communicating effectively in writing as appropriate for the needs of the audience.
+2.A.1.d,Speaking,Speaking,Talking to others to convey information effectively.
+2.A.1.e,Mathematics,Math,Using mathematics to solve problems.
+2.A.1.f,Science,Science,Using scientific rules and methods to solve problems.
+2.A.2,Process,,Procedures that contribute to the more rapid acquisition of knowledge and skill across a variety of domains
+2.A.2.a,Critical Thinking,Critical Thinking,"Using logic and reasoning to identify the strengths and weaknesses of alternative solutions, conclusions, or approaches to problems."
+2.A.2.b,Active Learning,,Understanding the implications of new information for both current and future problem-solving and decision-making.
+2.A.2.c,Learning Strategies,,Selecting and using training/instructional methods and procedures appropriate for the situation when learning or teaching new things.
+2.A.2.d,Monitoring,,"Monitoring/Assessing performance of yourself, other individuals, or organizations to make improvements or take corrective action."
+2.B,Cross-Functional Skills,,Developed capacities that facilitate performance of activities that occur across jobs
+2.B.1,Social Skills,Social,Developed capacities used to work with people to achieve goals
+2.B.1.a,Social Perceptiveness,,Being aware of others' reactions and understanding why they react as they do.
+2.B.1.b,Coordination,,Adjusting actions in relation to others' actions.
+2.B.1.c,Persuasion,,Persuading others to change their minds or behavior.
+2.B.1.d,Negotiation,,Bringing others together and trying to reconcile differences.
+2.B.1.e,Instructing,,Teaching others how to do something.
+2.B.1.f,Service Orientation,,Actively looking for ways to help people.
+2.B.2,Complex Problem Solving Skills,,"Developed capacities used to solve novel, ill-defined problems in complex, real-world settings"
+2.B.2.i,Complex Problem Solving,,Identifying complex problems and reviewing related information to develop and evaluate options and implement solutions.
+2.B.3,Technical Skills,Technical,"Developed capacities used to design, set-up, operate, and correct malfunctions involving application of machines or technological systems"
+2.B.3.a,Operations Analysis,,Analyzing needs and product requirements to create a design.
+2.B.3.b,Technology Design,,Generating or adapting equipment and technology to serve user needs.
+2.B.3.c,Equipment Selection,,Determining the kind of tools and equipment needed to do a job.
+2.B.3.d,Installation,,"Installing equipment, machines, wiring, or programs to meet specifications."
+2.B.3.e,Programming,,Writing computer programs for various purposes.
+2.B.3.g,Operations Monitoring,,"Watching gauges, dials, or other indicators to make sure a machine is working properly."
+2.B.3.h,Operation and Control,,Controlling operations of equipment or systems.
+2.B.3.j,Equipment Maintenance,,Performing routine maintenance on equipment and determining when and what kind of maintenance is needed.
+2.B.3.k,Troubleshooting,,Determining causes of operating errors and deciding what to do about it.
+2.B.3.l,Repairing,,Repairing machines or systems using the needed tools.
+2.B.3.m,Quality Control Analysis,,"Conducting tests and inspections of products, services, or processes to evaluate quality or performance."
+2.B.4,Systems Skills,,"Developed capacities used to understand, monitor, and improve socio-technical systems"
+2.B.4.e,Judgment and Decision Making,"Judgment,Decision Making",Considering the relative costs and benefits of potential actions to choose the most appropriate one.
+2.B.4.g,Systems Analysis,Analysis,"Determining how a system should work and how changes in conditions, operations, and the environment will affect outcomes."
+2.B.4.h,Systems Evaluation,Evaluation,"Identifying measures or indicators of system performance and the actions needed to improve or correct performance, relative to the goals of the system."
+2.B.5,Resource Management Skills,Management,Developed capacities used to allocate resources efficiently
+2.B.5.a,Time Management,,Managing one's own time and the time of others.
+2.B.5.b,Management of Financial Resources,Finance,"Determining how money will be spent to get the work done, and accounting for these expenditures."
+2.B.5.c,Management of Material Resources,,"Obtaining and seeing to the appropriate use of equipment, facilities, and materials needed to do certain work."
+2.B.5.d,Management of Personnel Resources,,"Motivating, developing, and directing people as they work, identifying the best people for the job."
+2.C,Knowledge,,Organized sets of principles and facts applying in general domains
+2.C.1,Business and Management,Business,"Knowledge of principles and facts related to business administration and accounting, human and material resource management in organizations, sales and marketing, economics, and office information and organizing systems"
+2.C.1.a,Administration and Management,Administration,"Knowledge of business and management principles involved in strategic planning, resource allocation, human resources modeling, leadership technique, production methods, and coordination of people and resources."
+2.C.1.b,Administrative,,"Knowledge of administrative and office procedures and systems such as word processing, managing files and records, stenography and transcription, designing forms, and workplace terminology."
+2.C.1.c,Economics and Accounting,"Economics,Accounting","Knowledge of economic and accounting principles and practices, the financial markets, banking, and the analysis and reporting of financial data."
+2.C.1.d,Sales and Marketing,"Sales,Marketing","Knowledge of principles and methods for showing, promoting, and selling products or services. This includes marketing strategy and tactics, product demonstration, sales techniques, and sales control systems."
+2.C.1.e,Customer and Personal Service,Customer Service,"Knowledge of principles and processes for providing customer and personal services. This includes customer needs assessment, meeting quality standards for services, and evaluation of customer satisfaction."
+2.C.1.f,Personnel and Human Resources,Human Resources,"Knowledge of principles and procedures for personnel recruitment, selection, training, compensation and benefits, labor relations and negotiation, and personnel information systems."
+2.C.2,Manufacturing and Production,"Manufacturing,Production","Knowledge of principles and facts related to the production, processing, storage, and distribution of manufactured and agricultural goods"
+2.C.2.a,Production and Processing,,"Knowledge of raw materials, production processes, quality control, costs, and other techniques for maximizing the effective manufacture and distribution of goods."
+2.C.2.b,Food Production,,"Knowledge of techniques and equipment for planting, growing, and harvesting food products (both plant and animal) for consumption, including storage/handling techniques."
+2.C.3,Engineering and Technology,Engineering,"Knowledge of the design, development, and application of technology for specific purposes."
+2.C.3.a,Computers and Electronics,,"Knowledge of circuit boards, processors, chips, electronic equipment, and computer hardware and software, including applications and programming."
+2.C.3.b,Engineering and Technology,,"Knowledge of the practical application of engineering science and technology. This includes applying principles, techniques, procedures, and equipment to the design and production of various goods and services."
+2.C.3.c,Design,,"Knowledge of design techniques, tools, and principles involved in production of precision technical plans, blueprints, drawings, and models."
+2.C.3.d,Building and Construction,,"Knowledge of materials, methods, and the tools involved in the construction or repair of houses, buildings, or other structures such as highways and roads."
+2.C.3.e,Mechanical,,"Knowledge of machines and tools, including their designs, uses, repair, and maintenance."
+2.C.4,Mathematics and Science,,"Knowledge of the history, theories, methods, and applications of the physical, biological, social, mathematical, and geography"
+2.C.4.a,Mathematics,,"Knowledge of arithmetic, algebra, geometry, calculus, statistics, and their applications."
+2.C.4.b,Physics,,"Knowledge and prediction of physical principles, laws, their interrelationships, and applications to understanding fluid, material, and atmospheric dynamics, and mechanical, electrical, atomic and sub-atomic structures and processes."
+2.C.4.c,Chemistry,,"Knowledge of the chemical composition, structure, and properties of substances and of the chemical processes and transformations that they undergo. This includes uses of chemicals and their interactions, danger signs, production techniques, and disposal methods."
+2.C.4.d,Biology,,"Knowledge of plant and animal organisms, their tissues, cells, functions, interdependencies, and interactions with each other and the environment."
+2.C.4.e,Psychology,,"Knowledge of human behavior and performance; individual differences in ability, personality, and interests; learning and motivation; psychological research methods; and the assessment and treatment of behavioral and affective disorders."
+2.C.4.f,Sociology and Anthropology,,"Knowledge of group behavior and dynamics, societal trends and influences, human migrations, ethnicity, cultures, and their history and origins."
+2.C.4.g,Geography,,"Knowledge of principles and methods for describing the features of land, sea, and air masses, including their physical characteristics, locations, interrelationships, and distribution of plant, animal, and human life."
+2.C.5,Health Services,Health,"Knowledge of principles and facts regarding diagnosing, curing, and preventing disease, and improving and preserving physical and mental health and well-being"
+2.C.5.a,Medicine and Dentistry,,"Knowledge of the information and techniques needed to diagnose and treat human injuries, diseases, and deformities. This includes symptoms, treatment alternatives, drug properties and interactions, and preventive health-care measures."
+2.C.5.b,Therapy and Counseling,,"Knowledge of principles, methods, and procedures for diagnosis, treatment, and rehabilitation of physical and mental dysfunctions, and for career counseling and guidance."
+2.C.6,Education and Training,Education,"Knowledge of principles and methods for curriculum and training design, teaching and instruction for individuals and groups, and the measurement of training effects."
+2.C.7,Arts and Humanities,"Arts,Humanities","Knowledge of facts and principles related to the branches of learning concerned with human thought, language, and the arts."
+2.C.7.a,English Language,Language,"Knowledge of the structure and content of the English language including the meaning and spelling of words, rules of composition, and grammar."
+2.C.7.b,Foreign Language,,"Knowledge of the structure and content of a foreign (non-English) language including the meaning and spelling of words, rules of composition and grammar, and pronunciation."
+2.C.7.c,Fine Arts,,"Knowledge of the theory and techniques required to compose, produce, and perform works of music, dance, visual arts, drama, and sculpture."
+2.C.7.d,History and Archeology,,"Knowledge of historical events and their causes, indicators, and effects on civilizations and cultures."
+2.C.7.e,Philosophy and Theology,,"Knowledge of different philosophical systems and religions. This includes their basic principles, values, ethics, ways of thinking, customs, practices, and their impact on human culture."
+2.C.8,Law and Public Safety,"Law,Public Safety","Knowledge of regulations and methods for maintaining people and property free from danger, injury, or damage; the rules of public conduct established and enforced by legislation, and the political process establishing such rules."
+2.C.8.a,Public Safety and Security,,"Knowledge of relevant equipment, policies, procedures, and strategies to promote effective local, state, or national security operations for the protection of people, data, property, and institutions."
+2.C.8.b,Law and Government,,"Knowledge of laws, legal codes, court procedures, precedents, government regulations, executive orders, agency rules, and the democratic political process."
+2.C.9,Communications,Communications,Knowledge of the science and art of delivering information
+2.C.9.a,Telecommunications,,"Knowledge of transmission, broadcasting, switching, control, and operation of telecommunications systems."
+2.C.9.b,Communications and Media,,"Knowledge of media production, communication, and dissemination techniques and methods. This includes alternative ways to inform and entertain via written, oral, and visual media."
+2.C.10,Transportation,Transportation,"Knowledge of principles and methods for moving people or goods by air, rail, sea, or road, including the relative costs and benefits."

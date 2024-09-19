@@ -10,9 +10,9 @@ from pathlib import Path
 DIR = Path(os.path.realpath(os.path.dirname(__file__)))
 
 def test_sde_amazon_robotics():
-    j = jobstruct.JobStruct.from_file(DIR / "SDE_Amazon_Robotics.html")
+    j = jobstruct.JobStructHTML.from_file(DIR / "SDE_Amazon_Robotics.html")
     print(j)
-    with open(DIR / "SDE_Amazon_Robotics.json") as f:
+    with open(DIR / "SDE_Amazon_Robotics_JobStructHTML.json") as f:
         true_dict = json.load(f)
     assert j.to_dict() == true_dict
 
@@ -20,8 +20,8 @@ def reset_test_output():
     """
     Reset test output files.
     """
-    j = jobstruct.JobStruct.from_file(DIR / "SDE_Amazon_Robotics.html")
-    with open(DIR / "SDE_Amazon_Robotics.json", "w") as f:
+    j = jobstruct.JobStructHTML.from_file(DIR / "SDE_Amazon_Robotics.html")
+    with open(DIR / "SDE_Amazon_Robotics_JobStructHTML.json", "w") as f:
         json.dump(j.to_dict(), f)
 
 if __name__ == "__main__":

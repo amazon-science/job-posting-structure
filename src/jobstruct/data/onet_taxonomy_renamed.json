@@ -1,0 +1,110 @@
+{
+  "name": "Skills",
+  "children": [
+    {
+      "name": "Reading"
+    },
+    {
+      "name": "Listening"
+    },
+    {
+      "name": "Writing"
+    },
+    {
+      "name": "Speaking"
+    },
+    {
+      "name": "Math"
+    },
+    {
+      "name": "Science"
+    },
+    {
+      "name": "Critical Thinking"
+    },
+    {
+      "name": "Social"
+    },
+    {
+      "name": "Technical"
+    },
+    {
+      "name": "Judgment"
+    },
+    {
+      "name": "Decision Making"
+    },
+    {
+      "name": "Analysis"
+    },
+    {
+      "name": "Evaluation"
+    },
+    {
+      "name": "Management"
+    },
+    {
+      "name": "Finance"
+    },
+    {
+      "name": "Business"
+    },
+    {
+      "name": "Administration"
+    },
+    {
+      "name": "Economics"
+    },
+    {
+      "name": "Accounting"
+    },
+    {
+      "name": "Sales"
+    },
+    {
+      "name": "Marketing"
+    },
+    {
+      "name": "Customer Service"
+    },
+    {
+      "name": "Human Resources"
+    },
+    {
+      "name": "Manufacturing"
+    },
+    {
+      "name": "Production"
+    },
+    {
+      "name": "Engineering"
+    },
+    {
+      "name": "Health"
+    },
+    {
+      "name": "Education"
+    },
+    {
+      "name": "Arts"
+    },
+    {
+      "name": "Humanities"
+    },
+    {
+      "name": "Language"
+    },
+    {
+      "name": "Law"
+    },
+    {
+      "name": "Public Safety"
+    },
+    {
+      "name": "Communications"
+    },
+    {
+      "name": "Transportation"
+    }
+  ]
+}

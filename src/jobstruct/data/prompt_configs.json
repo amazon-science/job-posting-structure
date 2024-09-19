@@ -1,0 +1,52 @@
+{
+    "extract": {
+        "modelId": "anthropic.claude-3-haiku-20240307-v1:0",
+        "anthropic_version": "bedrock-2023-05-31",
+        "max_tokens": 4096,
+        "temperature": 0.0,
+        "top_k": 250,
+        "top_p": 0.9,
+        "system": "You are an expert in English and data extraction."
+    },
+    "embedding": {
+        "modelId": "amazon.titan-embed-text-v2:0",
+        "dimensions": 256,
+        "normalize": true
+    },
+    "occupation": {
+        "modelId": "anthropic.claude-3-haiku-20240307-v1:0",
+        "anthropic_version": "bedrock-2023-05-31",
+        "max_tokens": 128,
+        "temperature": 0.0,
+        "top_k": 250,
+        "top_p": 0.9,
+        "system": "You are a labor market expert."
+    },
+    "skills": {
+        "modelId": "anthropic.claude-3-haiku-20240307-v1:0",
+        "anthropic_version": "bedrock-2023-05-31",
+        "max_tokens": 512,
+        "temperature": 0.0,
+        "top_k": 250,
+        "top_p": 0.9,
+        "system": "You are a labor market expert."
+    },
+    "taxonomy_enrich": {
+        "modelId": "anthropic.claude-3-sonnet-20240229-v1:0",
+        "anthropic_version": "bedrock-2023-05-31",
+        "max_tokens": 4096,
+        "temperature": 0.0,
+        "top_k": 250,
+        "top_p": 0.9,
+        "system": "You are a labor market expert."
+    },
+    "taxonomy_refine": {
+        "modelId": "anthropic.claude-3-sonnet-20240229-v1:0",
+        "anthropic_version": "bedrock-2023-05-31",
+        "max_tokens": 4096,
+        "temperature": 0.0,
+        "top_k": 250,
+        "top_p": 0.9,
+        "system": "You are a labor market expert."
+    }
+}

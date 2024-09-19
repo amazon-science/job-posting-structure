@@ -1,0 +1,325 @@
+{
+  "name": "Worker Requirements",
+  "attributes": {
+    "code": "2"
+  },
+  "children": [
+    {
+      "name": "Basic Skills",
+      "attributes": {
+        "code": "2.A"
+      },
+      "children": [
+        {
+          "name": "Content",
+          "attributes": {
+            "code": "2.A.1"
+          },
+          "children": [
+            {
+              "name": "Reading Comprehension",
+              "attributes": {
+                "code": "2.A.1.a"
+              },
+              "children": []
+            },
+            {
+              "name": "Active Listening",
+              "attributes": {
+                "code": "2.A.1.b"
+              },
+              "children": []
+            },
+            {
+              "name": "Writing",
+              "attributes": {
+                "code": "2.A.1.c"
+              },
+              "children": []
+            },
+            {
+              "name": "Speaking",
+              "attributes": {
+                "code": "2.A.1.d"
+              },
+              "children": []
+            },
+            {
+              "name": "Mathematics",
+              "attributes": {
+                "code": "2.A.1.e"
+              },
+              "children": []
+            },
+            {
+              "name": "Science",
+              "attributes": {
+                "code": "2.A.1.f"
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Process",
+          "attributes": {
+            "code": "2.A.2"
+          },
+          "children": [
+            {
+              "name": "Critical Thinking",
+              "attributes": {
+                "code": "2.A.2.a"
+              },
+              "children": []
+            },
+            {
+              "name": "Active Learning",
+              "attributes": {
+                "code": "2.A.2.b"
+              },
+              "children": []
+            },
+            {
+              "name": "Learning Strategies",
+              "attributes": {
+                "code": "2.A.2.c"
+              },
+              "children": []
+            },
+            {
+              "name": "Monitoring",
+              "attributes": {
+                "code": "2.A.2.d"
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cross-Functional Skills",
+      "attributes": {
+        "code": "2.B"
+      },
+      "children": [
+        {
+          "name": "Social Skills",
+          "attributes": {
+            "code": "2.B.1"
+          },
+          "children": [
+            {
+              "name": "Social Perceptiveness",
+              "attributes": {
+                "code": "2.B.1.a"
+              },
+              "children": []
+            },
+            {
+              "name": "Coordination",
+              "attributes": {
+                "code": "2.B.1.b"
+              },
+              "children": []
+            },
+            {
+              "name": "Persuasion",
+              "attributes": {
+                "code": "2.B.1.c"
+              },
+              "children": []
+            },
+            {
+              "name": "Negotiation",
+              "attributes": {
+                "code": "2.B.1.d"
+              },
+              "children": []
+            },
+            {
+              "name": "Instructing",
+              "attributes": {
+                "code": "2.B.1.e"
+              },
+              "children": []
+            },
+            {
+              "name": "Service Orientation",
+              "attributes": {
+                "code": "2.B.1.f"
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Complex Problem Solving Skills",
+          "attributes": {
+            "code": "2.B.2"
+          },
+          "children": [
+            {
+              "name": "Complex Problem Solving",
+              "attributes": {
+                "code": "2.B.2.i"
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Technical Skills",
+          "attributes": {
+            "code": "2.B.3"
+          },
+          "children": [
+            {
+              "name": "Operations Analysis",
+              "attributes": {
+                "code": "2.B.3.a"
+              },
+              "children": []
+            },
+            {
+              "name": "Technology Design",
+              "attributes": {
+                "code": "2.B.3.b"
+              },
+              "children": []
+            },
+            {
+              "name": "Equipment Selection",
+              "attributes": {
+                "code": "2.B.3.c"
+              },
+              "children": []
+            },
+            {
+              "name": "Installation",
+              "attributes": {
+                "code": "2.B.3.d"
+              },
+              "children": []
+            },
+            {
+              "name": "Programming",
+              "attributes": {
+                "code": "2.B.3.e"
+              },
+              "children": []
+            },
+            {
+              "name": "Operations Monitoring",
+              "attributes": {
+                "code": "2.B.3.g"
+              },
+              "children": []
+            },
+            {
+              "name": "Operation and Control",
+              "attributes": {
+                "code": "2.B.3.h"
+              },
+              "children": []
+            },
+            {
+              "name": "Equipment Maintenance",
+              "attributes": {
+                "code": "2.B.3.j"
+              },
+              "children": []
+            },
+            {
+              "name": "Troubleshooting",
+              "attributes": {
+                "code": "2.B.3.k"
+              },
+              "children": []
+            },
+            {
+              "name": "Repairing",
+              "attributes": {
+                "code": "2.B.3.l"
+              },
+              "children": []
+            },
+            {
+              "name": "Quality Control Analysis",
+              "attributes": {
+                "code": "2.B.3.m"
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Systems Skills",
+          "attributes": {
+            "code": "2.B.4"
+          },
+          "children": [
+            {
+              "name": "Judgment and Decision Making",
+              "attributes": {
+                "code": "2.B.4.e"
+              },
+              "children": []
+            },
+            {
+              "name": "Systems Analysis",
+              "attributes": {
+                "code": "2.B.4.g"
+              },
+              "children": []
+            },
+            {
+              "name": "Systems Evaluation",
+              "attributes": {
+                "code": "2.B.4.h"
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Resource Management Skills",
+          "attributes": {
+            "code": "2.B.5"
+          },
+          "children": [
+            {
+              "name": "Time Management",
+              "attributes": {
+                "code": "2.B.5.a"
+              },
+              "children": []
+            },
+            {
+              "name": "Management of Financial Resources",
+              "attributes": {
+                "code": "2.B.5.b"
+              },
+              "children": []
+            },
+            {
+              "name": "Management of Material Resources",
+              "attributes": {
+                "code": "2.B.5.c"
+              },
+              "children": []
+            },
+            {
+              "name": "Management of Personnel Resources",
+              "attributes": {
+                "code": "2.B.5.d"
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

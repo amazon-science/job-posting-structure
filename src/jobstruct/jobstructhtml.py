@@ -3,7 +3,7 @@
 
 from bs4 import BeautifulSoup
 
-class JobStruct:
+class JobStructHTML:
     """
     A class that represents a parsed HTML job posting, starting
     from either a filename, HTML text, or a BeautifulSoup object.
@@ -17,18 +17,9 @@ class JobStruct:
     * other
     """
 
-    __TAGS = [
-        "p",
-        "div",
-        "h1",
-        "h2",
-        "h3",
-        "h4",
-        "h5",
-        "h6",
-    ]
+    tags = ["p", "div", "h1", "h2", "h3", "h4", "h5", "h6"]
 
-    __SEGMENTS = {
+    segment_keywords = {
         "description": frozenset((
             "description",
             "overview",
@@ -79,9 +70,9 @@ class JobStruct:
 
 
     @classmethod
-    def from_file(cls, filename: str) -> "JobStruct":
+    def from_file(cls, filename: str) -> "JobStructHTML":
         """
-        Creates a JobStruct object from the HTML in `filename`.
+        Creates a JobStructHTML object from the HTML in `filename`.
         """
         with open(filename) as f:
             soup: BeautifulSoup = BeautifulSoup(f.read(), "html.parser")
@@ -89,35 +80,42 @@ class JobStruct:
 
 
     @classmethod
-    def from_string(cls, html: str) -> "JobStruct":
+    def from_string(cls, html: str) -> "JobStructHTML":
         """
-        Creates a JobStruct object from a `string` containing HTML.
+        Creates a JobStructHTML object from an `html` string.
         """
         soup: BeautifulSoup = BeautifulSoup(html, "html.parser")
         return cls(soup)
 
 
     @classmethod
-    def from_soup(cls, soup: BeautifulSoup) -> "JobStruct":
+    def from_soup(cls, soup: BeautifulSoup) -> "JobStructHTML":
         """
-        Creates a JobStruct object from BeautifulSoup-parsed HTML in `soup`.
+        Creates a JobStructHTML object from BeautifulSoup-parsed HTML in
+        `soup`.
         """
         return cls(soup)
 
 
     def to_dict(self):
         """
-        Convert the JobStruct object to a dictionary containing the segment
-        attributes.
+        Convert the JobStructHTML object to a dictionary containing the
+        segment attributes.
         """
-        return {segment: list(values) for segment, values in self.segments.items()}
+        return {
+            segment: list(values)
+            for segment, values in self.segments.items()
+        }
 
 
     def _init_segments(self):
         """
         Initial empty list for each segment type.
         """
-        self.segments = {segment: list() for segment in JobStruct.__SEGMENTS.keys()}
+        self.segments = {
+            segment: list()
+            for segment in JobStructHTML.segment_keywords.keys()
+        }
         # Other is the catch-all type for segments that don't match a keyword.
         self.segments["other"] = list()
 
@@ -128,7 +126,7 @@ class JobStruct:
         append the elements following the heading to the segment lists.
         """
         segment = "other"
-        for element in self.soup.body.find_all(JobStruct.__TAGS):
+        for element in self.soup.body.find_all(JobStructHTML.tags):
             text = element.get_text(separator="\n").strip()
             if text:
                 if len(text.split()) <= 5:
@@ -146,7 +144,7 @@ class JobStruct:
         Classify `text` into one of the segment types using keywords.
         Defaults to "other" if no keywords were found.
         """
-        for segment, keywords in JobStruct.__SEGMENTS.items():
+        for segment, keywords in JobStructHTML.segment_keywords.items():
             if any(word.strip(":") in keywords for word in text.split()):
                 return segment
         return "other"
@@ -157,7 +155,7 @@ class JobStruct:
         """
         return all(
             element.find(tag) is None
-            for tag in JobStruct.__TAGS
+            for tag in JobStructHTML.tags
         )
 
 
