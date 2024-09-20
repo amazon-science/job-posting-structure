@@ -7,6 +7,7 @@ Mark Howison, William O. Ensor, Suraj Maharjan, Rahil Parikh, Srinivasan H. Seng
 > **Abstract**: Labor market information is an important input to labor, workforce, education, and macroeconomic policy. However, granular and real-time data on labor market trends are lacking; publicly available data from survey samples are released with significant lags and miss critical information such as skills and benefits. We use generative Artificial Intelligence to automatically extract structured labor market information from unstructured online job postings for the entire U.S. labor market. To demonstrate our methodology, we construct a sample of 6,800 job postings stratified by 68 major occupational groups, extract structured information on educational requirements, remote-work flexibility, full-time availability, and benefits, and show how these job characteristics vary across occupations. As a validation, we compare frequencies of educational requirements by occupation from our sample to survey data and find no statistically significant difference. Finally, we discuss the scalability to collections of millions of job postings. Our results establish the feasibility of measuring labor market trends at scale from online job postings thanks to advances in generative AI techniques. Improved access to such insights at scale and in real-time could transform the ability of policy leaders, including federal and state agencies and education providers, to make data-informed decisions that better support the American workforce.
 
 Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
 Copyright National Association of State Workforce Agencies. All Rights Reserved.
 
 ## Organization
@@ -56,6 +57,31 @@ Initialize a JobStructAI object from a text filename, a text string, an HTML fil
 The extracted information can be accessed as object attributes or can be exported to a dictionary with:
 
     j.to_dict()
+
+The schema is:
+
+    job_title: str
+    details: List[str]
+    required:
+        education: str
+        major: List[str]
+        experience: int
+        qualifications: List[str]
+    preferred:
+        education: str
+        major: List[str]
+        experience: int
+        qualifications: List[str]
+    benefits: List[str]
+    salary: List[float]
+    wage: List[float]
+    entry_level: bool
+    college_degree: bool
+    full_time: bool
+    remote: bool
+    skills: List[str]
+    occupation: List[str]
+    embedding: List[float]
 
 ## JobStructHTML class
 
