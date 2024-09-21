@@ -1,3 +1,7 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# Copyright National Association of State Workforce Agencies. All Rights Reserved.
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+
 import csv
 import json
 

@@ -1,5 +1,6 @@
-# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.  
-# SPDX-License-Identifier: CC-BY-NC-4.0
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# Copyright National Association of State Workforce Agencies. All Rights Reserved.
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
 
 import logging
 from typing import Dict, List
