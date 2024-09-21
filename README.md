@@ -14,7 +14,7 @@ Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 Interna
 
 ## Overview
 
-Job postings are challenging to use as a data source for labor market information because of the variation in how they are written. Generative AI models excel at summarizing the kind of variation in language, formatting, and conventions found in job postings. This package provides Generative AI methods for extracting structured information from job postings, which we studied in the paper cited above. Using an example job posting for a software engineer, you can view an example of the [original job description](tests/SDE_II.txt) and the resulting [structured information](tests/SDE_II_JobStructAI.json) extracted by the package.
+Job postings are challenging to use as a data source for labor market information because of the variation in how they are written. Generative AI models excel at summarizing the kind of variation in language, formatting, and conventions found in job postings. This package provides Generative AI methods for extracting structured information from job postings, which we studied in the paper cited above. Using an example job posting for a software engineer, you can view an example of the [original job description](tests/jobstruct/SDE_II.txt) and the resulting [structured information](tests/jobstruct/SDE_II_JobStructAI.json) extracted by the package.
 
 ## Organization
 
