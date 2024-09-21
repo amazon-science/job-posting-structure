@@ -10,16 +10,32 @@ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 Copyright National Association of State Workforce Agencies. All Rights Reserved.
 
+Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International.
+
+## Overview
+
+Job postings are challenging to use as a data source for labor market information because of the variation in how they are written. Generative AI models excel at summarizing the kind of variation in language, formatting, and conventions found in job postings. This package provides Generative AI methods for extracting structured information from job postings, which we studied in the paper cited above. Using an example job posting for a software engineer, you can view an example of the [original job description](tests/SDE_II.txt) and the resulting [structured information](tests/SDE_II_JobStructAI.json) extracted by the package.
+
 ## Organization
 
 The package is organized into three main classes:
-- **SkillsTaxonomyAI** provides a GenAI method for enriching an existing skills taxonomy, which defaults to the [O*NET® Database](https://www.onetcenter.org/database.html). It requires a subscription to the [Amazon Bedrock](https://aws.amazon.com/bedrock) service for access to GenAI foundation models (Claude 3 Haiku by default).
+- **SkillsTaxonomyAI** provides a GenAI method for enriching an existing skills taxonomy, which defaults to a basic taxonomy derived from the [O*NET® Database](https://www.onetcenter.org/database.html). It requires a subscription to the [Amazon Bedrock](https://aws.amazon.com/bedrock) service for access to GenAI foundation models (Claude 3 Haiku by default).
 - **JobStructAI** provides GenAI methods for extracting structured information from job description text, optionally using a SkillsTaxonomy object to identify skills. It also requires a Bedrock subscription.
 - **JobStructHTML** provides a basic, deterministic method for extracting information from an HTML-formatted job posting using HTML tags and conventions for typical section names. It requires no subscriptions and can be run offline.
 
 It also provides a command-line interface to the SkillsTaxonomyAI and JobStructAI classes.
 
-## SkillsTaxonomyAI class
+## Prompt Architecture
+
+The SkillsTaxonomyAI class uses a single prompt `enrich`, which can be called iteratively to expand the child nodes of the skills taxonomy, starting from a basic taxonomy.
+
+The JobStructAI class uses the `extract` prompt for an initial extraction of structured information from the job posting. It concatenates the `job_title`, `details`, `required:qualifications`, and `preferred:qualifications` fields into a cleaned job description, which can be optionally run through the `occupation`, `embedding`, and `skills` prompts to add those corresponding fields. The `skills` prompt additionally requires a SkillsTaxonomyAI object as input.
+
+![Diagram of prompt architecture](doc/diagram.png)
+
+## API Examples
+
+### SkillsTaxonomyAI class
 
 The SkillsTaxonomyAI class can be initialized without any parameters, which will load a basic skills taxonomy included in the package.
 
@@ -36,7 +52,7 @@ Once initialized, the skills taxonomy can be enriched using generative AI querie
     client = boto3.client("bedrock-runtime")
     skills.enrich(client)
 
-## JobStructAI class
+### JobStructAI class
 
 Initialize a JobStructAI object from a text filename, a text string, an HTML filename, or an HTML string, along with a Bedrock client and (optionally) a skills taxonomy:
 
@@ -83,7 +99,7 @@ The schema is:
     occupation: List[str]
     embedding: List[float]
 
-## JobStructHTML class
+### JobStructHTML class
 
 Initialize a JobStructHTML object from a filename, an HTML string, or an existing BeautifulSoup object that contains parsed HTML:
 
@@ -108,7 +124,7 @@ The object contains attributes for each segment parsed from the job posting:
 - eeo (Equal Employment Opportunity)
 - other
 
-## Command-line interface
+## Command-line examples
 
 The `jobstruct` command provides access to the SkillsTaxonomyAI and JobStructAI classes through the subcommands:
 
