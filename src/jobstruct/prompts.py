@@ -55,7 +55,6 @@ class Prompts:
             }}```
          </schema>""")
 
-
     skills = dedent("""
         You are a helpful assistant.
         Your task is to read the job requirements in the <text></text> tags and map each given qualification to relevant skills
@@ -70,7 +69,6 @@ class Prompts:
         Return the mapped skills as a JSON list.
         Skip the preamble and the explanation.
         Be careful, think, check your answers and only then return your response. You must not select skills at random, it must be through careful examination.""")
-
 
     occupation = dedent("""
         You are a helpful assistant.
@@ -96,9 +94,7 @@ class Prompts:
         Skip the preamble and the explanation.
         Be careful, think, check your answers and only then return your response. You must not select skills at random, it must be through careful examination.""")
 
-
     embedding = ""
-
 
     taxonomy_enrich = dedent("""
         You are a helpful assistant.
@@ -107,11 +103,10 @@ class Prompts:
         {text}
         </tree>
         <note>
-        - You must return your response in the same format of the tree. 
+        - You must return your response in the same format of the tree.
         - You are free to expand the leaf nodes up to whatever depth you feel necessary, however make sure to add only relevant skills as nodes. Use all your knowledge to create an expanded tree and make it comprehensive.
         </note>
         Review your output for correctness and check if all instructions have been followed. Skip the explanation and the preamble and return your verified response only.""")
-
 
     taxonomy_refine = dedent("""
         You are a helpful assistant.
@@ -120,11 +115,10 @@ class Prompts:
         {text}
         </tree>
         <note>
-        - You must return your response in the same format of the tree. 
+        - You must return your response in the same format of the tree.
         - Make sure the tree contains new and emerging skills that are important in the labor market.
         </note>
         Review your output for correctness and check if all instructions have been followed. Skip the explanation and the preamble and return your verified response only.""")
-
 
     def __init__(
         self,
@@ -140,7 +134,6 @@ class Prompts:
         else:
             with resources.open_text("jobstruct.data", "prompt_configs.json") as f:
                 self.prompt_configs = json.load(f)
-
 
     @staticmethod
     def safe_json(text: str, default: Any) -> Union[Dict, List]:
@@ -159,7 +152,6 @@ class Prompts:
             log.debug("json.loads failed")
             return default
 
-
     def invoke(
         self,
         name: str,
@@ -173,7 +165,7 @@ class Prompts:
         if not hasattr(Prompts, name):
             raise ValueError("{name} is an unrecognized prompt")
         if name not in self.prompt_configs:
-            raise ValueErrop("{name} is missing from prompt_configs")
+            raise ValueError("{name} is missing from prompt_configs")
 
         prompt_config = self.prompt_configs[name].copy()
         modelId = prompt_config.pop("modelId")
@@ -185,7 +177,7 @@ class Prompts:
                     "role": "user",
                     "content": [
                         {
-                            "type": "text", 
+                            "type": "text",
                             "text": getattr(Prompts, name).format(
                                 text=text,
                                 skills=skills,

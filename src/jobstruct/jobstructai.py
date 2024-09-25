@@ -5,9 +5,8 @@
 import json
 import logging
 from bs4 import BeautifulSoup
-from importlib import resources
 from mypy_boto3_bedrock_runtime.client import BedrockRuntimeClient
-from typing import Any, Callable, Dict, List, Optional, Union
+from typing import Any, Callable, List, Optional
 from .prompts import Prompts
 from .jobstructhtml import JobStructHTML
 from .skillstaxonomyai import SkillsTaxonomyAI
@@ -139,7 +138,6 @@ class JobStructAI:
                     float
                 )
 
-
     @staticmethod
     def validate_field(value: Any, type_func: Callable) -> Any:
         """
@@ -156,7 +154,6 @@ class JobStructAI:
             )
             return None
 
-
     @staticmethod
     def validate_list(values: List, type_func: Callable) -> Any:
         """
@@ -167,7 +164,6 @@ class JobStructAI:
             lambda x: x is not None,
             [JobStructAI.validate_field(x, type_func) for x in values]
         ))
-
 
     @classmethod
     def from_file(
@@ -192,7 +188,6 @@ class JobStructAI:
             embedding,
             config_file,
         )
-
 
     @classmethod
     def from_html(
@@ -226,7 +221,6 @@ class JobStructAI:
             config_file,
         )
 
-
     @classmethod
     def from_html_file(
         cls,
@@ -250,7 +244,6 @@ class JobStructAI:
             embedding,
             config_file,
         )
-
 
     def to_dict(self):
         """

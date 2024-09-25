@@ -69,7 +69,6 @@ class JobStructHTML:
             self._segment()
         self._add_attributes()
 
-
     @classmethod
     def from_file(cls, filename: str) -> "JobStructHTML":
         """
@@ -79,7 +78,6 @@ class JobStructHTML:
             soup: BeautifulSoup = BeautifulSoup(f.read(), "html.parser")
         return cls(soup)
 
-
     @classmethod
     def from_string(cls, html: str) -> "JobStructHTML":
         """
@@ -88,7 +86,6 @@ class JobStructHTML:
         soup: BeautifulSoup = BeautifulSoup(html, "html.parser")
         return cls(soup)
 
-
     @classmethod
     def from_soup(cls, soup: BeautifulSoup) -> "JobStructHTML":
         """
@@ -96,7 +93,6 @@ class JobStructHTML:
         `soup`.
         """
         return cls(soup)
-
 
     def to_dict(self):
         """
@@ -108,7 +104,6 @@ class JobStructHTML:
             for segment, values in self.segments.items()
         }
 
-
     def _init_segments(self):
         """
         Initial empty list for each segment type.
@@ -119,7 +114,6 @@ class JobStructHTML:
         }
         # Other is the catch-all type for segments that don't match a keyword.
         self.segments["other"] = list()
-
 
     def _segment(self):
         """
@@ -139,7 +133,6 @@ class JobStructHTML:
                         else:
                             self.segments[segment].append(line)
 
-
     def _classify_segment(self, text: str):
         """
         Classify `text` into one of the segment types using keywords.
@@ -150,7 +143,6 @@ class JobStructHTML:
                 return segment
         return "other"
 
-
     def _is_terminal(self, element):
         """
         """
@@ -159,7 +151,6 @@ class JobStructHTML:
             for tag in JobStructHTML.tags
         )
 
-
     def _add_attributes(self):
         """
         Add attributes for each segment type to the returned object.
@@ -167,7 +158,6 @@ class JobStructHTML:
         for segment in self.segments.keys():
             assert not hasattr(self, segment)
             setattr(self, segment, self.segments[segment])
-
 
     def __str__(self):
         output = []

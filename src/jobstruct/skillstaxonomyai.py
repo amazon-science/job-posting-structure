@@ -12,6 +12,9 @@ from .skillsnode import SkillsNode
 
 class SkillsTaxonomyAI:
     """
+    A class that represents a skills taxonomy as a tree and
+    uses generative AI prompting to enrich the tree with
+    additional skills granularity.
     """
 
     def __init__(
@@ -29,7 +32,6 @@ class SkillsTaxonomyAI:
         self.root = SkillsNode.from_tree_dict(tree)
         self.names = set(self.root.names())
 
-
     @classmethod
     def from_file(cls, filename: str) -> "SkillsTaxonomyAI":
         """
@@ -37,7 +39,6 @@ class SkillsTaxonomyAI:
         """
         with open(filename) as f:
             return cls(json.load(f))
-
 
     def enrich(
         self,
@@ -110,7 +111,6 @@ class SkillsTaxonomyAI:
                     leaf.add_child(child)
                     child.attributes["terminal"] = terminal
 
-
     def refine(
         self,
         client: BedrockRuntimeClient,
@@ -142,13 +142,11 @@ class SkillsTaxonomyAI:
         except:
             log.warn("could not parse prompt result: {}".format(result))
 
-
     def to_dict(self):
         """
         Convert the SkillsTaxonomyAI object to a dictionary.
         """
         return self.root.to_tree_dict(attributes=True)
-
 
     def __str__(self) -> str:
         """

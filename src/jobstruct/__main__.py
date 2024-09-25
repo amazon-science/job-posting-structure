@@ -1,4 +1,5 @@
-# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.  
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# Copyright National Association of State Workforce Agencies. All Rights Reserved.
 # SPDX-License-Identifier: CC-BY-NC-4.0
 
 import boto3

@@ -2,7 +2,6 @@
 # Copyright National Association of State Workforce Agencies. All Rights Reserved.
 # SPDX-License-Identifier: CC-BY-NC-SA-4.0
 
-import logging
 from typing import Dict, List
 
 class SkillsNode:
@@ -17,7 +16,6 @@ class SkillsNode:
         self.parent = None
         self.children = []
 
-
     @classmethod
     def from_dict(cls, node: Dict) -> "SkillsNode":
         """
@@ -28,7 +26,6 @@ class SkillsNode:
         if "attributes" in node:
             assert isinstance(node["attributes"], dict), "invalid node: attributes is not a dict"
         return cls(node["name"], node.get("attributes", {}))
-
 
     @classmethod
     def from_tree_dict(cls, tree: Dict) -> "SkillsNode":
@@ -53,7 +50,6 @@ class SkillsNode:
 
         return root
 
-
     def add_child(self, child: "SkillsNode") -> "SkillsNode":
         """
         Add a child SkillsNode to this SkillsNode, then return the child
@@ -65,7 +61,6 @@ class SkillsNode:
         child.root = False
 
         return child
-
 
     def leaves(self) -> List["SkillsNode"]:
         """
@@ -84,7 +79,6 @@ class SkillsNode:
 
         return result
 
-
     def names(self) -> List[str]:
         """
         Return a list of names for the node and all it's children.
@@ -100,7 +94,6 @@ class SkillsNode:
 
         return result
 
-
     def to_dict(self, attributes: bool = False) -> Dict:
         """
         Flatten the node into a dict.
@@ -111,7 +104,6 @@ class SkillsNode:
         if attributes:
             result["attributes"] = self.attributes
         return result
-
 
     def to_tree_dict(self, attributes: bool = False) -> Dict:
         """
@@ -128,7 +120,6 @@ class SkillsNode:
             return result
  
         return traverse(self)
-
 
     def to_tree_string(self) -> str:
         """
