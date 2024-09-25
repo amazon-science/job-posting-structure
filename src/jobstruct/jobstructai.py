@@ -44,7 +44,6 @@ class JobStructAI:
         skills: List[str]
         occupation: List[str]
         embedding: List[float]
-
     """
 
     def __init__(
