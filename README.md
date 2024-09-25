@@ -31,7 +31,7 @@ The SkillsTaxonomyAI class uses a single prompt `enrich`, which can be called it
 
 The JobStructAI class uses the `extract` prompt for an initial extraction of structured information from the job posting. It concatenates the `job_title`, `details`, `required:qualifications`, and `preferred:qualifications` fields into a cleaned job description, which can be optionally run through the `occupation`, `embedding`, and `skills` prompts to add those corresponding fields. The `skills` prompt additionally requires a SkillsTaxonomyAI object as input.
 
-![Diagram of prompt architecture](doc/diagram.png)
+![Diagram of prompt architecture](https://raw.githubusercontent.com/amazon-science/job-posting-structure/main/doc/diagram.png)
 
 ## API Examples
 
