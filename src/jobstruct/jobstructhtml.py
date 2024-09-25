@@ -11,7 +11,7 @@ class JobStructHTML:
     The parsed segments of the job posting, available as attributes, are:
     * description
     * benefits
-    * qualitifications
+    * qualifications
     * responsibilities
     * requirements
     * eeo (Equal Employment Opportunity)
