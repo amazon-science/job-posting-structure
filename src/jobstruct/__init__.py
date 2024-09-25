@@ -12,4 +12,4 @@ from .prompts          import Prompts
 from .skillsnode       import SkillsNode
 from .skillstaxonomyai import SkillsTaxonomyAI
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"

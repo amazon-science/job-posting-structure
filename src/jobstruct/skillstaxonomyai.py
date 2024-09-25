@@ -68,10 +68,13 @@ class SkillsTaxonomyAI:
             query = leaf.parent.to_dict()
             query["children"] = leaf.to_dict()
             result = Prompts.safe_json(
-                prompts
-                .invoke("taxonomy_enrich", json.dumps(query))
-                .removeprefix("<tree>")
-                .removesuffix("</tree>")
+                (
+                    prompts
+                    .invoke("taxonomy_enrich", json.dumps(query))
+                    .removeprefix("<tree>")
+                    .removesuffix("</tree>")
+                ),
+                {}
             )
 
             # Parse the prompt result.
