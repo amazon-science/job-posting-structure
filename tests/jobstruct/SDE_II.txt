@@ -1,0 +1,54 @@
+SDE II Job ID: 2776239 | Amazon.com Services LLC DESCRIPTION Amazon Managed
+Compute Runtimes (MCR) is looking for a passionate, result-driven, and
+innovative SDE II to deliver our grand vision, design and implement technical
+solution that empowers our customers to achieve region flexibility, and
+address the fundamental needs for Compute, Orchestration, and Observability
+via our centrally managed runtimes. You’ll be joining a team building cutting
+edge and highly distributed systems to enable world class, cost-effective,
+and user friendly systems as we aim to create a highly technical, customer
+obsessed, and entrepreneurial culture.
+
+Successful candidates will have a proven track record of developing highly
+distributed systems and customer friendly web applications using Agile and
+incremental delivery methods. You must enjoy working on complex software
+systems in a customer-centric environment and be passionate not only about
+building good software but also ensuring that same software achieve its goals
+in operational reality.
+
+If you’re excited about contributing to the innovations that power Amazon's
+next generation of computing architecture, making broad impacts across all
+Amazon business lines including Amazon Stores, Kindle, Alexa, Pharmacy,
+Payments etc, or just have the desire to have fun creating something you can
+be proud to show your family and friends, reach out. We’d love to chat.
+
+BASIC QUALIFICATIONS
+- 3+ years of non-internship professional software development experience
+- 2+ years of non-internship design or architecture (design patterns,
+  reliability and scaling) of new and existing systems experience
+- Experience programming with at least one software programming language
+
+PREFERRED QUALIFICATIONS
+- 3+ years of full software development life cycle, including coding
+  standards, code reviews, source control management, build processes,
+  testing, and operations experience
+- Bachelor's degree in computer science or equivalent
+
+Amazon is committed to a diverse and inclusive workplace. Amazon is an equal
+opportunity employer and does not discriminate on the basis of race, national
+origin, gender, gender identity, sexual orientation, protected veteran
+status, disability, age, or other legally protected status. For individuals
+with disabilities who would like to request an accommodation, please visit
+https://www.amazon.jobs/en/disability/us.
+
+Our compensation reflects the cost of labor across several US geographic
+markets. The base pay for this position ranges from $129,300/year in our
+lowest geographic market up to $223,600/year in our highest geographic
+market. Pay is based on a number of factors including market location and may
+vary depending on job-related knowledge, skills, and experience. Amazon is a
+total compensation company. Dependent on the position offered, equity,
+sign-on payments, and other forms of compensation may be provided as part of
+a total compensation package, in addition to a full range of medical,
+financial, and/or other benefits. For more information, please visit
+https://www.aboutamazon.com/workplace/employee-benefits. This position will
+remain posted until filled. Applicants should apply via our internal or
+external career site.
