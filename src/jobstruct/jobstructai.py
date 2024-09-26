@@ -74,7 +74,7 @@ class JobStructAI:
         if text:
             result = Prompts.safe_json(prompts.invoke("extract", text), {})
         else:
-            result = {}
+            raise ValueError("text is empty")
 
         # Data structure
         self.job_title      = JobStructAI.validate_field(result.get("job_title"), str)
