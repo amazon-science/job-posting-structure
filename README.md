@@ -118,7 +118,7 @@ The object contains attributes for each segment parsed from the job posting:
 
 - description
 - benefits
-- qualitifications
+- qualifications
 - responsibilities
 - requirements
 - eeo (Equal Employment Opportunity)
