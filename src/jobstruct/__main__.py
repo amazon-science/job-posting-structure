@@ -32,8 +32,7 @@ def get_client(args: Namespace, timeout: int = 60) -> BedrockRuntimeClient:
 
 def run_extract(args: Namespace) -> None:
     """
-    Extract structured information from a list of input files and
-    write to json output.
+    extract structured information from job postings
     """
 
     results = []
@@ -67,7 +66,7 @@ def run_extract(args: Namespace) -> None:
 
 def run_enrich(args: Namespace) -> None:
     """
-    Enrich a skills taxonomy.
+    enrich a skills taxonomy
     """
     if args.input:
         skills = jobstruct.SkillsTaxonomyAI.from_file(args.input)
@@ -82,7 +81,7 @@ def run_enrich(args: Namespace) -> None:
 
 def run_refine(args: Namespace) -> None:
     """
-    Refine a skills taxonomy.
+    refine a skills taxonomy
     """
     if args.input:
         skills = jobstruct.SkillsTaxonomyAI.from_file(args.input)
@@ -95,11 +94,31 @@ def run_refine(args: Namespace) -> None:
         json.dump(skills.to_dict(), f, indent=2)
 
 
+def run_print(args: Namespace) -> None:
+    """
+    print a skills taxonomy or job embedding
+    """
+    if args.type == "skills":
+        result = str(jobstruct.SkillsTaxonomyAI.from_file(args.input))
+    elif args.type == "embedding":
+        result = []
+        with open(args.input) as f:
+            for i, obj in enumerate(json.load(f)):
+                if not "embedding" in obj or not isinstance(obj["embedding"], list):
+                    raise ValueError(f"invalid 'embedding' entry in input json at job {i}")
+                result.append(str(obj["embedding"]).replace(" ", ""))
+        result = "\n".join(result)
+    else:
+        raise ValueError(f"unknown type '{args.type}'")
+    with open(args.output, "w") if args.output != "-" else sys.stdout as f:
+        print(result, file=f)
+
+
 def main():
 
     parser = ArgumentParser(description=jobstruct.__doc__)
     parser.set_defaults(run=lambda x: parser.print_help())
-    subparsers = parser.add_subparsers()
+    subparsers = parser.add_subparsers(title="commands")
 
     # common arguments
 
@@ -139,7 +158,7 @@ def main():
 
     # extract command
 
-    extract = subparsers.add_parser("extract")
+    extract = subparsers.add_parser("extract", help=run_extract.__doc__)
     extract.set_defaults(run=run_extract)
     extract.add_argument(
         "inputs",
@@ -170,7 +189,7 @@ def main():
 
     # enrich command
 
-    enrich = subparsers.add_parser("enrich")
+    enrich = subparsers.add_parser("enrich", help=run_enrich.__doc__)
     enrich.set_defaults(run=run_enrich)
     enrich.add_argument(
         "input",
@@ -186,7 +205,7 @@ def main():
 
     # refine command
 
-    refine = subparsers.add_parser("refine")
+    refine = subparsers.add_parser("refine", help=run_refine.__doc__)
     refine.set_defaults(run=run_refine)
     refine.add_argument(
         "input",
@@ -194,6 +213,26 @@ def main():
         nargs="?",
     )
     refine.add_argument(
+        "-o",
+        "--output",
+        default="-",
+        help="output file (default: stdout)",
+    )
+
+    # print command
+
+    print_ = subparsers.add_parser("print", help=run_print.__doc__)
+    print_.set_defaults(run=run_print)
+    print_.add_argument(
+        "type",
+        choices=["skills", "embedding"],
+        help="the type of json file to read and print",
+    )
+    print_.add_argument(
+        "input",
+        help="input json file",
+    )
+    print_.add_argument(
         "-o",
         "--output",
         default="-",

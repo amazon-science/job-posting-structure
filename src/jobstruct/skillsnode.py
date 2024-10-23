@@ -123,12 +123,15 @@ class SkillsNode:
 
     def to_tree_string(self) -> str:
         """
-        Flatten the node and it's children into a string representation
+        Flatten the node and it's children into a YAML string representation
         of node names in the tree.
         """
         result = []
         def traverse(node: "SkillsNode", level: int) -> None:
-            result.append("|{} {}".format("-" * level, node.name))
+            if node.children:
+                result.append("{}{}:".format("  " * level, node.name))
+            else:
+                result.append("{} - {}".format("  " * level, node.name))
             for child in node.children:
                 traverse(child, level + 1)
         traverse(self, 0)
