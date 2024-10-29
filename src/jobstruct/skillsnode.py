@@ -4,6 +4,7 @@
 
 from typing import Dict, List
 
+
 class SkillsNode:
     """
     Class representing a node in the skills taxonomy.
@@ -110,6 +111,7 @@ class SkillsNode:
         Flatten the node and it's children into a dict.
         Optionally include node attributes.
         """
+
         def traverse(node: "SkillsNode") -> Dict:
             result = {
                 "name": node.name,
@@ -118,21 +120,20 @@ class SkillsNode:
             if attributes:
                 result["attributes"] = node.attributes
             return result
- 
+
         return traverse(self)
 
     def to_tree_string(self) -> str:
         """
-        Flatten the node and it's children into a YAML string representation
+        Flatten the node and it's children into a string representation
         of node names in the tree.
         """
         result = []
+
         def traverse(node: "SkillsNode", level: int) -> None:
-            if node.children:
-                result.append("{}{}:".format("  " * level, node.name))
-            else:
-                result.append("{} - {}".format("  " * level, node.name))
+            result.append("|{} {}".format("-" * level, node.name))
             for child in node.children:
                 traverse(child, level + 1)
+
         traverse(self, 0)
         return "\n".join(result)

@@ -74,30 +74,34 @@ class JobStructAI:
         if text:
             result = Prompts.safe_json(prompts.invoke("extract", text), {})
         else:
-            raise ValueError("text is empty")
+            result = {}
+
+        print(result)
 
         # Data structure
         self.job_title      = JobStructAI.validate_field(result.get("job_title"), str)
         self.details        = JobStructAI.validate_list(result.get("details", []), str)
         self.required = {
-            "education"     : JobStructAI.validate_field(result.get("required", {}).get("education"), str),
-            "major"         : JobStructAI.validate_list(result.get("required", {}).get("major", []), str),
-            "experience"    : JobStructAI.validate_field(result.get("required", {}).get("experience"), int),
-            "qualifications": JobStructAI.validate_list(result.get("required", {}).get("qualifications", []), str),
+            "education": JobStructAI.validate_field(result.get("required", {}).get("education"), str),
+            "major": JobStructAI.validate_list(result.get("required", {}).get("major") or [], str),
+            "experience": JobStructAI.validate_field(result.get("required", {}).get("experience"), int),
+            "qualifications": JobStructAI.validate_list(result.get("required", {}).get("qualifications") or [], str),
         }
         self.preferred = {
-            "education"     : JobStructAI.validate_field(result.get("preferred", {}).get("education"), str),
-            "major"         : JobStructAI.validate_list(result.get("preferred", {}).get("major", []), str),
-            "experience"    : JobStructAI.validate_field(result.get("preferred", {}).get("experience"), int),
-            "qualifications": JobStructAI.validate_list(result.get("preferred", {}).get("qualifications", []), str),
+            "education": JobStructAI.validate_field(result.get("preferred", {}).get("education"), str),
+            "major": JobStructAI.validate_list(result.get("preferred", {}).get("major") or [], str),
+            "experience": JobStructAI.validate_field(result.get("preferred", {}).get("experience"), int),
+            "qualifications": JobStructAI.validate_list(result.get("preferred", {}).get("qualifications") or [], str),
         }
-        self.benefits       = JobStructAI.validate_list(result.get("benefits", []), str)
-        self.salary         = JobStructAI.validate_list(result.get("salary", []), float)
-        self.wage           = JobStructAI.validate_list(result.get("wage", []), float)
-        self.entry_level    = JobStructAI.validate_field(result.get("entry_level"), bool)
-        self.college_degree = JobStructAI.validate_field(result.get("college_degree"), bool)
-        self.full_time      = JobStructAI.validate_field(result.get("full_time"), bool)
-        self.remote         = JobStructAI.validate_field(result.get("remote"), bool)
+
+        self.benefits = JobStructAI.validate_list(result.get("benefits") or [], str)
+        self.salary = JobStructAI.validate_list(result.get("salary") or [], float)
+        self.wage = JobStructAI.validate_list(result.get("wage") or [], float)
+        self.entry_level = JobStructAI.validate_field(result.get("entry_level") or False, bool)
+        self.college_degree = JobStructAI.validate_field(result.get("college_degree") or False, bool)
+        self.full_time = JobStructAI.validate_field(result.get("full_time") or False, bool)
+        self.remote = JobStructAI.validate_field(result.get("remote") or False, bool)
+
         self.skills         = []
         self.occupation     = []
         self.embedding      = None

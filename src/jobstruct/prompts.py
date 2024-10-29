@@ -1,7 +1,7 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # Copyright National Association of State Workforce Agencies. All Rights Reserved.
 # SPDX-License-Identifier: CC-BY-NC-SA-4.0
-
+import asyncio
 import json
 import logging
 import re
@@ -98,15 +98,19 @@ class Prompts:
 
     taxonomy_enrich = dedent("""
         You are a helpful assistant.
-        Your task is to read the skills taxonomy containing the parent node - leaf node combination within <tree></tree> tags and expand only the leaf node. You must make use of all your knowledge on job postings and expand the leaf nodes using the related skills only. You must be very careful.
+        Your task is to read the skills taxonomy containing the parent node - leaf node combination within <tree></tree> 
+        tags and expand only the leaf node. You must make use of all your knowledge on job postings and expand the leaf 
+        nodes using the related skills only. You must be very careful.
         <tree>
         {text}
         </tree>
         <note>
         - You must return your response in the same format of the tree.
-        - You are free to expand the leaf nodes up to whatever depth you feel necessary, however make sure to add only relevant skills as nodes. Use all your knowledge to create an expanded tree and make it comprehensive.
+        - You are free to expand the leaf nodes up to whatever depth you feel necessary, however make sure to add only 
+        relevant skills as nodes. Use all your knowledge to create an expanded tree and make it comprehensive.
         </note>
-        Review your output for correctness and check if all instructions have been followed. Skip the explanation and the preamble and return your verified response only.""")
+        Review your output for correctness and check if all instructions have been followed. Skip the explanation and 
+        the preamble and return your verified response only.""")
 
     taxonomy_refine = dedent("""
         You are a helpful assistant.
@@ -120,13 +124,27 @@ class Prompts:
         </note>
         Review your output for correctness and check if all instructions have been followed. Skip the explanation and the preamble and return your verified response only.""")
 
+    taxonomy_prune = dedent("""
+        You are a helpful assistant.
+        Your task is to review the skills contained in the <tree></tree> tags.
+        Some skills are duplicates with different parents. For each duplicate, you need to select one to keep based on the context (parent skills) and suggest removal of the rest.
+        <tree>
+        {text}
+        </tree>
+        <note>
+        - Return your response in the same tree format, with duplicate skills removed.
+        - For each removed skill, list it under a "removed" key in the output.
+        - Ensure the remaining skill fits well with the parent nodes and the overall tree.
+        - Do not change any skills unless they are duplicates.
+        </note>
+        Review your output for correctness and check if all instructions have been followed. Skip the explanation and the preamble and return your verified response only.
+    """)
+
     def __init__(
         self,
         client: BedrockRuntimeClient,
         config_file: str = "",
     ):
-        """
-        """
         self.client = client
         if config_file:
             with open(config_file) as f:
@@ -144,7 +162,7 @@ class Prompts:
         log = logging.getLogger("jobstruct.Prompts.safe_json")
 
         text = re.sub(r"(^[^\{\[]*)|([^\]\}]*$)", "", text)
-        log.debug("stripped text: {}".format(text))
+        log.debug(f"stripped text: {text}")
 
         try:
             return json.loads(text)
@@ -159,13 +177,14 @@ class Prompts:
         skills: str = "",
     ) -> Union[Dict, List]:
         """
+        Synchronous method to invoke the LLM.
         """
         log = logging.getLogger("jobstruct.Prompts.invoke")
 
         if not hasattr(Prompts, name):
-            raise ValueError("{name} is an unrecognized prompt")
+            raise ValueError(f"{name} is an unrecognized prompt")
         if name not in self.prompt_configs:
-            raise ValueError("{name} is missing from prompt_configs")
+            raise ValueError(f"{name} is missing from prompt_configs")
 
         prompt_config = self.prompt_configs[name].copy()
         modelId = prompt_config.pop("modelId")
@@ -187,7 +206,7 @@ class Prompts:
                 }
             ]
         body = json.dumps(prompt_config)
-        log.debug("'{}' body: {}".format(name, body))
+        log.debug(f"'{name}' body: {body}")
 
         response = self.client.invoke_model(
             body=body,
@@ -195,7 +214,7 @@ class Prompts:
             accept="application/json",
             contentType="application/json"
         )
-        log.debug("response: {}".format(response))
+        log.debug(f"response: {response}")
 
         if name == "embedding":
             result = (
@@ -210,6 +229,23 @@ class Prompts:
                 .get("content")[0]
                 .get("text")
             )
-        log.debug("result: {}".format(result))
+        log.debug(f"result: {result}")
 
+        return result
+
+    async def invoke_async(
+        self,
+        name: str,
+        text: str,
+        skills: str = "",
+    ) -> Union[Dict, List]:
+        """
+        Asynchronous wrapper for the invoke method using asyncio.
+        """
+        result = await asyncio.to_thread(
+            self.invoke,
+            name,
+            text,
+            skills
+        )
         return result
