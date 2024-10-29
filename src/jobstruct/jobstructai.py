@@ -81,6 +81,7 @@ class JobStructAI:
         # Data structure
         self.job_title      = JobStructAI.validate_field(result.get("job_title"), str)
         self.details        = JobStructAI.validate_list(result.get("details", []), str)
+        # Initiation is updated to resolve Issue 3
         self.required = {
             "education": JobStructAI.validate_field(result.get("required", {}).get("education"), str),
             "major": JobStructAI.validate_list(result.get("required", {}).get("major") or [], str),
