@@ -6,12 +6,18 @@ import ast
 import asyncio
 import json
 import logging
+import random
 import re
+import time
 import yaml
 from importlib import resources
 from mypy_boto3_bedrock_runtime.client import BedrockRuntimeClient
 from textwrap import dedent
 from typing import Any, Dict, List, Union
+from botocore.exceptions import ClientError
+import os
+
+os.environ['AWS_MAX_ATTEMPTS'] = '10'
 
 class Prompts:
     """
@@ -60,18 +66,18 @@ class Prompts:
 
     skills = dedent("""
         You are a helpful assistant.
-        Your task is to read the job qualifications in the <qualifications></qualifications> tags and identify the specific skills its mentions from the taxonomy in the <skills></skills> tags.
-        <qualifications>
+        Your task is to read the job requirements in the <text></text> tags and map each given qualification to relevant skills
+        given within the <skills></skills> tags. Make sure to map each qualification. Read the qualification carefully and make the correct mapping to the given set of skills.
+        <text>
         {text}
-        </qualifications>
+        </text>
+        Understand the qualifications above and map them to the skills:
         <skills>
         {skills}
         </skills>
-        Read the qualifications carefully and only select skills that you are certain are in the qualifications.
-        Do not return any skills that are not explicitly written in the qualifications.
-        Be careful and check your answer.
+        Return the mapped skills as a JSON list.
         Skip the preamble and the explanation.
-        Return your response in the same format as the <skills></skills> tags.""")
+        Be careful, think, check your answers and only then return your response. You must not select skills at random, it must be through careful examination.""")
 
     occupation = dedent("""
         You are a helpful assistant.
@@ -197,8 +203,12 @@ class Prompts:
         skills: str = "",
     ) -> Union[Dict, List]:
         """
-        Synchronous method to invoke the LLM.
+        Synchronous method to invoke the LLM, with exponential backoff retry strategy.
         """
+        if not hasattr(Prompts, name):
+            raise ValueError(f"{name} is an unrecognized prompt")
+        if name not in self.prompt_configs:
+            raise ValueError(f"{name} is missing from prompt_configs")
         log = logging.getLogger("jobstruct.Prompts.invoke")
 
         if not hasattr(Prompts, name):
@@ -228,30 +238,55 @@ class Prompts:
         body = json.dumps(prompt_config)
         log.debug(f"'{name}' body: {body}")
 
-        response = self.client.invoke_model(
-            body=body,
-            modelId=modelId,
-            accept="application/json",
-            contentType="application/json"
-        )
-        log.debug(f"response: {response}")
+        MAX_RETRIES = 8
+        INITIAL_DELAY = 3  # seconds
+        RETRYABLE_EXCEPTIONS = ('ThrottlingException', 'TooManyRequestsException')
 
-        if name == "embedding":
-            result = (
-                json
-                .loads(response.get("body").read())
-                .get("embedding")
-            )
-        else:
-            result = (
-                json
-                .loads(response.get("body").read())
-                .get("content")[0]
-                .get("text")
-            )
-        log.debug(f"result: {result}")
+        delay = INITIAL_DELAY
 
-        return result
+        for attempt in range(1, MAX_RETRIES + 1):
+            try:
+                response = self.client.invoke_model(
+                    body=body,
+                    modelId=modelId,
+                    accept="application/json",
+                    contentType="application/json"
+                )
+                log.debug(f"response: {response}")
+
+                if name == "embedding":
+                    result = (
+                        json
+                        .loads(response.get("body").read())
+                        .get("embedding")
+                    )
+                else:
+                    result = (
+                        json
+                        .loads(response.get("body").read())
+                        .get("content")[0]
+                        .get("text")
+                    )
+                log.debug(f"result: {result}")
+
+                return result
+
+            except ClientError as e:
+                error_code = e.response['Error']['Code']
+                if error_code in RETRYABLE_EXCEPTIONS:
+                    log.warning(f"Attempt {attempt} failed due to rate limit. Retrying in {delay} seconds...")
+                    time.sleep(delay)
+                    # Exponential backoff
+                    delay = min(delay * 2, 60) + random.uniform(0, 1)
+                else:
+                    log.error(f"Non-retryable ClientError occurred: {e}")
+                    raise e
+            except Exception as e:
+                log.error(f"An unexpected error occurred: {e}")
+                raise e
+
+        # If all retries are exhausted, raise an exception
+        raise Exception("Maximum retry attempts exceeded for invoke method.")
 
     async def invoke_async(
         self,
@@ -262,7 +297,9 @@ class Prompts:
         """
         Asynchronous wrapper for the invoke method using asyncio.
         """
-        result = await asyncio.to_thread(
+        loop = asyncio.get_running_loop()
+        result = await loop.run_in_executor(
+            None,
             self.invoke,
             name,
             text,

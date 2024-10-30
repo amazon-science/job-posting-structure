@@ -84,57 +84,31 @@ test_taxonomy = {
 
 REGION_NAME = "us-east-1"
 
-def main():
+async def main():
     client = boto3.client("bedrock-runtime", region_name=REGION_NAME)
 
-    with open('tests/jobstruct/skilltaxonomy_deduplication_test.json', 'r') as f:
-        test_taxonomy = json.load(f)
-
+    # Load or define your taxonomy
     taxonomy_ai = jobstruct.skillstaxonomyai.SkillsTaxonomyAI(tree=test_taxonomy)
 
-    # print("Taxonomy before pruning:")
-    # print(taxonomy_ai.to_tree_string_with_duplicates())
-
-    with open('tests/jobstruct/raw_tree.txt', 'w') as f:
-        f.write(taxonomy_ai.to_tree_string_with_duplicates())
-
-    pre_stats = taxonomy_ai.print_taxonomy_stats()
-    with open('tests/jobstruct/pre_stats.json', 'w') as f:
-        json.dump(pre_stats, f)
-
     # Enrich
-    print("Enrichment started.")
-    asyncio.run(taxonomy_ai.enrich(client))
+    await taxonomy_ai.enrich(client)
 
-    print("\nTaxonomy after enrichment:")
-    print(taxonomy_ai.to_tree_string_with_duplicates())
     with open('tests/jobstruct/enriched_tree.txt', 'w') as f:
         f.write(taxonomy_ai.to_tree_string_with_duplicates())
-
-    enriched_stats = taxonomy_ai.print_taxonomy_stats()
+    post_stats = taxonomy_ai.print_taxonomy_stats()
     with open('tests/jobstruct/enriched_stats.json', 'w') as f:
-        json.dump(enriched_stats, f)
+        json.dump(post_stats, f)
 
-    with open('tests/jobstruct/skilltaxonomy_deduplication_test_enriched.json', 'w') as f:
-        json.dump(taxonomy_ai.to_dict(), f)
+    # Prune
+    await taxonomy_ai.prune(client)
 
-    # Run the prune method
-    # taxonomy_ai.prune(client=client, debug=False)
-
-    print("Deduplication started.")
-    asyncio.run(taxonomy_ai.prune(client))
-
-    print("\nTaxonomy after pruning:")
-    print(taxonomy_ai.to_tree_string_with_duplicates())
     with open('tests/jobstruct/pruned_tree.txt', 'w') as f:
         f.write(taxonomy_ai.to_tree_string_with_duplicates())
-
     post_stats = taxonomy_ai.print_taxonomy_stats()
     with open('tests/jobstruct/pruned_stats.json', 'w') as f:
         json.dump(post_stats, f)
 
-    with open('tests/jobstruct/skilltaxonomy_deduplication_test_pruned.json', 'w') as f:
-        json.dump(taxonomy_ai.to_dict(), f)
+
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())

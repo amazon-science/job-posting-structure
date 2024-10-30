@@ -46,7 +46,7 @@ class SkillsTaxonomyAI:
 
     async def enrich(
         self,
-        client: BedrockRuntimeClient,
+        client,  # Removed type hint for compatibility
         config_file: str = "",
     ) -> None:
         """
@@ -55,6 +55,7 @@ class SkillsTaxonomyAI:
         previous iterations (e.g., if they contain duplicates of existing
         skills in the taxonomy).
         """
+        print("Enrichment started.")
         # Setup logging
         log = logging.getLogger("jobstruct.SkillsTaxonomyAI.enrich")
 
@@ -66,10 +67,9 @@ class SkillsTaxonomyAI:
 
         tasks = []
         for leaf in self.root.leaves():
-
-            # Skip terminal nodes, which expanded to duplicate skills in a previous iteration.
+            # Skip terminal nodes
             if leaf.attributes.get("terminal"):
-                log.info(f"skipping terminal node '{leaf.name}'")
+                log.info(f"Skipping terminal node '{leaf.name}'")
                 continue
 
             # Create a task for each leaf node
@@ -79,15 +79,14 @@ class SkillsTaxonomyAI:
             tasks.append(task)
 
         # Await the completion of all tasks
-        # await asyncio.gather(*tasks)
         await tqdm_asyncio.gather(*tasks, total=len(tasks), desc="Enriching Skills Taxonomy")
 
     async def _process_leaf(self, leaf, prompts, semaphore):
         async with semaphore:
             log = logging.getLogger("jobstruct.SkillsTaxonomyAI._process_leaf")
-            # Create a query tree that includes the leaf and its parent.
+            # Create a query tree that includes the leaf and its parent
             query = leaf.parent.to_dict()
-            query["children"] = leaf.to_dict()
+            query["children"] = [leaf.to_dict()]  # Fixed to ensure correct structure
 
             try:
                 response = await prompts.invoke_async(
@@ -98,27 +97,27 @@ class SkillsTaxonomyAI:
                     {}
                 )
 
-                # Parse the prompt result.
+                # Parse the prompt result
                 try:
                     root = SkillsNode.from_tree_dict(result)
                 except Exception:
                     log.warning(
-                        f"could not parse prompt result for leaf node '{leaf.name}': {result}"
+                        f"Could not parse prompt result for leaf node '{leaf.name}': {result}"
                     )
                     return
                 if len(root.children) != 1:
                     log.warning(
-                        f"prompt result includes siblings of leaf node '{leaf.name}': {root.to_tree_dict()}"
+                        f"Prompt result includes siblings of leaf node '{leaf.name}': {root.to_tree_dict()}"
                     )
                     return
                 root = root.children[0]
                 if root.name != leaf.name:
                     log.warning(
-                        f"prompt result does not align with leaf node '{leaf.name}': {root.to_tree_dict()}"
+                        f"Prompt result does not align with leaf node '{leaf.name}': {root.to_tree_dict()}"
                     )
                     return
 
-                # Determine if the result contains a duplicate of an existing skill.
+                # Determine if the result contains a duplicate of an existing skill
                 terminal = any(name in self.names for name in root.names()[1:])
 
                 for child in root.children:
@@ -143,6 +142,7 @@ class SkillsTaxonomyAI:
 
         If `debug` is True, prints debugging information at each step.
         """
+        print("Deduplication started.")
         log = logging.getLogger("jobstruct.SkillsTaxonomyAI.prune")
 
         prompts = Prompts(client, config_file)
@@ -175,8 +175,7 @@ class SkillsTaxonomyAI:
             )
             tasks.append(task)
 
-        # Await the completion of all tasks
-        await tqdm_asyncio.gather(*tasks, total=len(tasks), desc="Enriching Skills Taxonomy")
+        await tqdm_asyncio.gather(*tasks, total=len(tasks), desc="Deduplicating Skills Taxonomy")
 
     async def _process_duplicate(self, skill_name, paths, prompts, semaphore, lock, debug=False):
         async with semaphore:
