@@ -118,14 +118,10 @@ class JobStructAI:
         if text.strip():
             if skills is not None:
                 self.skills = list(sorted(set(JobStructAI.validate_list(
-                    Prompts.safe_json(
-                        prompts.invoke(
-                            "skills",
-                            text,
-                            json.dumps(skills.to_dict())
-                        ),
-                        []
-                    ),
+                    SkillsTaxonomyAI(tree=Prompts.safe_literal(
+                        prompts.invoke("skills", text, str(skills.to_dict())),
+                        {}
+                    )).to_list(),
                     str
                 ))))
             if occupation:

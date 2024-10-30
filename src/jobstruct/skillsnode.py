@@ -35,7 +35,6 @@ class SkillsNode:
         Return the root SkillsNode.
         """
         root = SkillsNode.from_dict(tree)
-
         def traverse(node: "SkillsNode", subtree: Dict) -> None:
             if "children" in subtree:
                 # Fix singleton children
@@ -46,9 +45,7 @@ class SkillsNode:
                 for child_tree in subtree["children"]:
                     child_node = node.add_child(SkillsNode.from_dict(child_tree))
                     traverse(child_node, child_tree)
-
         traverse(root, tree)
-
         return root
 
     def add_child(self, child: "SkillsNode") -> "SkillsNode":
@@ -57,10 +54,8 @@ class SkillsNode:
         (for chaining).
         """
         self.children.append(child)
-
         child.parent = self
         child.root = False
-
         return child
 
     def leaves(self) -> List["SkillsNode"]:
@@ -68,16 +63,13 @@ class SkillsNode:
         Return a list of leaf nodes.
         """
         result = []
-
         def traverse(node: "SkillsNode") -> None:
             if not node.children:
                 result.append(node)
             else:
                 for child in node.children:
                     traverse(child)
-
         traverse(self)
-
         return result
 
     def names(self) -> List[str]:
@@ -85,14 +77,11 @@ class SkillsNode:
         Return a list of names for the node and all it's children.
         """
         result = []
-
         def traverse(node: "SkillsNode") -> None:
             result.append(node.name)
             for child in node.children:
                 traverse(child)
-
         traverse(self)
-
         return result
 
     def to_dict(self, attributes: bool = False) -> Dict:
@@ -106,12 +95,60 @@ class SkillsNode:
             result["attributes"] = self.attributes
         return result
 
-    def to_tree_dict(self, attributes: bool = False) -> Dict:
+    def to_keys(self, sep: str = "::") -> List[str]:
+        """
+        Flatten the node and it's children into a list of distinct
+        skill keys, using the `sep` character between levels.
+        """
+        result = []
+        def traverse(node: "SkillsNode", prefix: str) -> None:
+            name = node.name.replace(sep, "")
+            if prefix:
+                key = f"{prefix}{sep}{name}"
+            else:
+                key = name
+            result.append(key)
+            for child in node.children:
+                traverse(child, key)
+        for child in self.children:
+            traverse(child, "")
+        return result
+
+    def to_list(self) -> List[str]:
+        """
+        Flatten the node and it's children into a list of node names.
+        """
+        result = []
+        def traverse(node: "SkillsNode", level: int) -> None:
+            result.append(node.name)
+            for child in node.children:
+                traverse(child, level + 1)
+        traverse(self, 0)
+        return result
+
+    def to_taxonomy(self) -> str:
+        """
+        Flatten the node and it's children into a taxonomy of distinct
+        skills with a hierarchical identifiers.
+        """
+        result = []
+        def traverse(node: "SkillsNode", childnum: int, prefix: str) -> None:
+            if prefix:
+                prefix = f"{prefix}.{childnum}"
+            else:
+                prefix = f"{childnum}"
+            result.append(f"{prefix} {node.name}")
+            for i, child in enumerate(node.children, start=1):
+                traverse(child, i, prefix)
+        for i, child in enumerate(self.children, start=1):
+            traverse(child, i, "")
+        return "\n".join(result)
+
+    def to_tree_dict(self, attributes: bool = True) -> Dict:
         """
         Flatten the node and it's children into a dict.
         Optionally include node attributes.
         """
-
         def traverse(node: "SkillsNode") -> Dict:
             result = {
                 "name": node.name,
@@ -120,20 +157,23 @@ class SkillsNode:
             if attributes:
                 result["attributes"] = node.attributes
             return result
-
         return traverse(self)
 
-    def to_tree_string(self) -> str:
+    def to_tree_string(self, yaml: bool = True) -> str:
         """
         Flatten the node and it's children into a string representation
         of node names in the tree.
         """
         result = []
-
         def traverse(node: "SkillsNode", level: int) -> None:
-            result.append("|{} {}".format("-" * level, node.name))
+            if yaml:
+                if node.children:
+                    result.append("{}{}:".format("  " * level, node.name))
+                else:
+                    result.append("{}{}".format("  " * level, node.name))
+            else:
+                result.append("{}{}".format("  " * level, node.name))
             for child in node.children:
                 traverse(child, level + 1)
-
         traverse(self, 0)
         return "\n".join(result)

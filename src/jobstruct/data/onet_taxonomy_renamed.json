@@ -2,109 +2,97 @@
   "name": "Skills",
   "children": [
     {
-      "name": "Reading"
-    },
-    {
-      "name": "Listening"
-    },
-    {
-      "name": "Writing"
-    },
-    {
-      "name": "Speaking"
-    },
-    {
-      "name": "Math"
-    },
-    {
-      "name": "Science"
-    },
-    {
-      "name": "Critical Thinking"
-    },
-    {
-      "name": "Social"
-    },
-    {
-      "name": "Technical"
-    },
-    {
-      "name": "Judgment"
-    },
-    {
-      "name": "Decision Making"
-    },
-    {
-      "name": "Analysis"
-    },
-    {
-      "name": "Evaluation"
-    },
-    {
-      "name": "Management"
-    },
-    {
-      "name": "Finance"
-    },
-    {
-      "name": "Business"
+      "name": "Accounting"
     },
     {
       "name": "Administration"
     },
     {
-      "name": "Economics"
-    },
-    {
-      "name": "Accounting"
-    },
-    {
-      "name": "Sales"
-    },
-    {
-      "name": "Marketing"
-    },
-    {
-      "name": "Customer Service"
-    },
-    {
-      "name": "Human Resources"
-    },
-    {
-      "name": "Manufacturing"
-    },
-    {
-      "name": "Production"
-    },
-    {
-      "name": "Engineering"
-    },
-    {
-      "name": "Health"
-    },
-    {
-      "name": "Education"
+      "name": "Analysis"
     },
     {
       "name": "Arts"
     },
     {
-      "name": "Humanities"
-    },
-    {
-      "name": "Language"
-    },
-    {
-      "name": "Law"
-    },
-    {
-      "name": "Public Safety"
+      "name": "Business"
     },
     {
       "name": "Communications"
     },
     {
+      "name": "Critical Thinking"
+    },
+    {
+      "name": "Customer Service"
+    },
+    {
+      "name": "Decision Making"
+    },
+    {
+      "name": "Education"
+    },
+    {
+      "name": "Engineering"
+    },
+    {
+      "name": "Evaluation"
+    },
+    {
+      "name": "Finance"
+    },
+    {
+      "name": "Health"
+    },
+    {
+      "name": "Human Resources"
+    },
+    {
+      "name": "Humanities"
+    },
+    {
+      "name": "Judgment"
+    },
+    {
+      "name": "Law"
+    },
+    {
+      "name": "Listening"
+    },
+    {
+      "name": "Management"
+    },
+    {
+      "name": "Manufacturing"
+    },
+    {
+      "name": "Marketing"
+    },
+    {
+      "name": "Production"
+    },
+    {
+      "name": "Public Safety"
+    },
+    {
+      "name": "Reading"
+    },
+    {
+      "name": "Sales"
+    },
+    {
+      "name": "Science"
+    },
+    {
+      "name": "Social"
+    },
+    {
+      "name": "Speaking"
+    },
+    {
       "name": "Transportation"
+    },
+    {
+      "name": "Writing"
     }
   ]
 }

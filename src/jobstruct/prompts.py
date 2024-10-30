@@ -1,10 +1,13 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # Copyright National Association of State Workforce Agencies. All Rights Reserved.
 # SPDX-License-Identifier: CC-BY-NC-SA-4.0
+
+import ast
 import asyncio
 import json
 import logging
 import re
+import yaml
 from importlib import resources
 from mypy_boto3_bedrock_runtime.client import BedrockRuntimeClient
 from textwrap import dedent
@@ -57,18 +60,18 @@ class Prompts:
 
     skills = dedent("""
         You are a helpful assistant.
-        Your task is to read the job requirements in the <text></text> tags and map each given qualification to relevant skills
-        given within the <skills></skills> tags. Make sure to map each qualification. Read the qualification carefully and make the correct mapping to the given set of skills.
-        <text>
+        Your task is to read the job qualifications in the <qualifications></qualifications> tags and identify the specific skills its mentions from the taxonomy in the <skills></skills> tags.
+        <qualifications>
         {text}
-        </text>
-        Understand the qualifications above and map them to the skills:
+        </qualifications>
         <skills>
         {skills}
         </skills>
-        Return the mapped skills as a JSON list.
+        Read the qualifications carefully and only select skills that you are certain are in the qualifications.
+        Do not return any skills that are not explicitly written in the qualifications.
+        Be careful and check your answer.
         Skip the preamble and the explanation.
-        Be careful, think, check your answers and only then return your response. You must not select skills at random, it must be through careful examination.""")
+        Return your response in the same format as the <skills></skills> tags.""")
 
     occupation = dedent("""
         You are a helpful assistant.
@@ -152,6 +155,23 @@ class Prompts:
         else:
             with resources.open_text("jobstruct.data", "prompt_configs.json") as f:
                 self.prompt_configs = json.load(f)
+
+    @staticmethod
+    def safe_literal(text: str, default: Any) -> Union[Dict, List]:
+        """
+        Safely parse python output from `text` after stripping extraneous text.
+        Return the `default` value if parsing fails.
+        """
+        log = logging.getLogger("jobstruct.Prompts.safe_literal")
+
+        text = re.sub(r"(^[^\{\[]*)|([^\]\}]*$)", "", text)
+        log.debug("stripped text: {}".format(text))
+
+        try:
+            return ast.literal_eval(text)
+        except SyntaxError:
+            log.debug("ast.literal_eval failed")
+            return default
 
     @staticmethod
     def safe_json(text: str, default: Any) -> Union[Dict, List]:

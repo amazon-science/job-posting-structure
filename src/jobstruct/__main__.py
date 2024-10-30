@@ -2,6 +2,7 @@
 # Copyright National Association of State Workforce Agencies. All Rights Reserved.
 # SPDX-License-Identifier: CC-BY-NC-4.0
 
+import asyncio
 import boto3
 import jobstruct
 import json
@@ -73,22 +74,26 @@ def run_enrich(args: Namespace) -> None:
     else:
         skills = jobstruct.SkillsTaxonomyAI()
 
-    skills.enrich(get_client(args), args.prompt_config)
+    asyncio.run(
+        skills.enrich(get_client(args), args.prompt_config)
+    )
 
     with open(args.output, "w") if args.output != "-" else sys.stdout as f:
         json.dump(skills.to_dict(), f, indent=2)
 
 
-def run_refine(args: Namespace) -> None:
+def run_prune(args: Namespace) -> None:
     """
-    refine a skills taxonomy
+    prune duplicates from a skills taxonomy
     """
     if args.input:
         skills = jobstruct.SkillsTaxonomyAI.from_file(args.input)
     else:
         skills = jobstruct.SkillsTaxonomyAI()
 
-    skills.refine(get_client(args, timeout=600), args.prompt_config)
+    asyncio.run(
+        skills.prune(get_client(args), args.prompt_config, debug=True)
+    )
 
     with open(args.output, "w") if args.output != "-" else sys.stdout as f:
         json.dump(skills.to_dict(), f, indent=2)
@@ -99,7 +104,7 @@ def run_print(args: Namespace) -> None:
     print a skills taxonomy or job embedding
     """
     if args.type == "skills":
-        result = str(jobstruct.SkillsTaxonomyAI.from_file(args.input))
+        result = jobstruct.SkillsTaxonomyAI.from_file(args.input).to_taxonomy()
     elif args.type == "embedding":
         result = []
         with open(args.input) as f:
@@ -203,16 +208,16 @@ def main():
         help="output file (default: stdout)",
     )
 
-    # refine command
+    # prune command
 
-    refine = subparsers.add_parser("refine", help=run_refine.__doc__)
-    refine.set_defaults(run=run_refine)
-    refine.add_argument(
+    prune = subparsers.add_parser("prune", help=run_prune.__doc__)
+    prune.set_defaults(run=run_prune)
+    prune.add_argument(
         "input",
         help="input json file with starting taxonomy [default: included O*NET]",
         nargs="?",
     )
-    refine.add_argument(
+    prune.add_argument(
         "-o",
         "--output",
         default="-",

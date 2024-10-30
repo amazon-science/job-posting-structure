@@ -6,6 +6,7 @@ import csv
 import json
 
 skills = []
+exclude = frozenset(("Economics", "Math", "Language", "Technical"))
 
 with open("onet_taxonomy_renamed.csv") as f:
     for row in csv.DictReader(f):
@@ -16,7 +17,11 @@ with open("onet_taxonomy_renamed.json", "w") as f:
     json.dump(
         {
             "name": "Skills",
-            "children": [{"name": skill} for skill in skills]
+            "children": [
+                {"name": skill}
+                for skill in sorted(skills)
+                if skill not in exclude
+            ]
         },
         f,
         indent=2

@@ -2,20 +2,17 @@
 # Copyright National Association of State Workforce Agencies. All Rights Reserved.
 # SPDX-License-Identifier: CC-BY-NC-SA-4.0
 
-from .prompts import Prompts
-from .skillsnode import SkillsNode
-from tqdm.asyncio import tqdm_asyncio
 import asyncio
 import json
 import logging
 from collections import Counter, defaultdict
 from importlib import resources
-from typing import Any, Dict, List, Optional, Union
-
 from mypy_boto3_bedrock_runtime.client import BedrockRuntimeClient
+from tqdm.asyncio import tqdm_asyncio
+from typing import Any, Dict, List, Optional, Union
+from .prompts import Prompts
+from .skillsnode import SkillsNode
 
-# Assuming SkillsNode is defined elsewhere
-# from your_module import SkillsNode
 
 class SkillsTaxonomyAI:
     """
@@ -65,7 +62,7 @@ class SkillsTaxonomyAI:
         prompts = Prompts(client, config_file)
 
         # Use a semaphore to limit the number of concurrent tasks if needed
-        semaphore = asyncio.Semaphore(3)  # Adjust based on your API limits
+        semaphore = asyncio.Semaphore(2)  # Adjust based on your API limits
 
         tasks = []
         for leaf in self.root.leaves():
@@ -322,18 +319,42 @@ class SkillsTaxonomyAI:
         except:
             log.warn("could not parse prompt result: {}".format(result))
 
-    def to_dict(self):
+    def to_dict(self, attributes: bool = True) -> Dict:
         """
         Convert the SkillsTaxonomyAI object to a dictionary.
         """
-        return self.root.to_tree_dict(attributes=True)
+        return self.root.to_tree_dict(attributes=attributes)
+
+    def to_keys(self) -> List[str]:
+        """
+        Convert the SkillsTaxonomyAI object to a list of skill keys.
+        """
+        return self.root.to_keys()
+
+    def to_list(self) -> List[str]:
+        """
+        Convert the SkillsTaxonomyAI object to a list of skill names.
+        """
+        return self.root.to_list()
+
+    def to_taxonomy(self) -> str:
+        """
+        Convert the SkillsTaxonomyAI object to a taxonomy string.
+        """
+        return self.root.to_taxonomy()
+
+    def to_yaml(self) -> str:
+        """
+        Convert the SkillsTaxonomyAI object to a YAML string.
+        """
+        return self.root.to_tree_string(yaml=True)
 
     def __str__(self) -> str:
         """
         String representation of the SkillsTaxonomyAI object showing
         the node names in the tree.
         """
-        return self.root.to_tree_string()
+        return self.root.to_tree_string(yaml=False)
 
     def to_tree_string_with_duplicates(self) -> str:
         """
@@ -450,14 +471,3 @@ class SkillsTaxonomyAI:
             if node.name == name:
                 return len(node.children) == 0
         return False
-
-
-
-
-
-
-
-
-
-
-
