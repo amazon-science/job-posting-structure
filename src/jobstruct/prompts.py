@@ -9,11 +9,13 @@ import logging
 import random
 import re
 import time
+from datetime import datetime
+import boto3
 import yaml
 from importlib import resources
 from mypy_boto3_bedrock_runtime.client import BedrockRuntimeClient
 from textwrap import dedent
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Union, Tuple
 from botocore.exceptions import ClientError
 import os
 
@@ -67,7 +69,8 @@ class Prompts:
     skills = dedent("""
         You are a helpful assistant.
         Your task is to read the job requirements in the <text></text> tags and map each given qualification to relevant skills
-        given within the <skills></skills> tags. Make sure to map each qualification. Read the qualification carefully and make the correct mapping to the given set of skills.
+        given within the <skills></skills> tags. Make sure to map each qualification. 
+        Read the qualification carefully and make the correct mapping to the given set of skills.
         <text>
         {text}
         </text>
@@ -77,12 +80,14 @@ class Prompts:
         </skills>
         Return the mapped skills as a JSON list.
         Skip the preamble and the explanation.
-        Be careful, think, check your answers and only then return your response. You must not select skills at random, it must be through careful examination.""")
+        Be careful, think, check your answers and only then return your response. 
+        You must not select skills at random, it must be through careful examination.""")
 
     occupation = dedent("""
         You are a helpful assistant.
         <task>
-        You must select the two most relevant Standard Occupational Classification (SOC) codes for the job description provided within the <text></text> tags.
+        You must select the two most relevant Standard Occupational Classification (SOC) codes for the job description
+         provided within the <text></text> tags.
         </task>
         <instructions>
         Here are some important rules for the task:
@@ -90,7 +95,8 @@ class Prompts:
         <text>
         {text}
         </text>
-        - Based on your complete understanding of the job description, identify the two most relevant Standard Occupational Classification (SOC) major occupation code that best corresponds to the job description.
+        - Based on your complete understanding of the job description, identify the two most relevant Standard Occupational
+          Classification (SOC) major occupation code that best corresponds to the job description.
            Only and only if you are ambiguous about categorizing the job description into one single code, then return two codes.
            Otherwise you must return one code.
         </instructions>
@@ -101,7 +107,8 @@ class Prompts:
             }}```
         </schema>
         Skip the preamble and the explanation.
-        Be careful, think, check your answers and only then return your response. You must not select skills at random, it must be through careful examination.""")
+        Be careful, think, check your answers and only then return your response. 
+        You must not select skills at random, it must be through careful examination.""")
 
     embedding = ""
 
@@ -201,7 +208,7 @@ class Prompts:
         name: str,
         text: str,
         skills: str = "",
-    ) -> Union[Dict, List]:
+    ) -> Union[Dict, List, Tuple]:
         """
         Synchronous method to invoke the LLM, with exponential backoff retry strategy.
         """
@@ -243,6 +250,7 @@ class Prompts:
         RETRYABLE_EXCEPTIONS = ('ThrottlingException', 'TooManyRequestsException')
 
         delay = INITIAL_DELAY
+        llm_call_metadata = {}
 
         for attempt in range(1, MAX_RETRIES + 1):
             try:
@@ -252,6 +260,7 @@ class Prompts:
                     accept="application/json",
                     contentType="application/json"
                 )
+                llm_call_metadata = response['ResponseMetadata']
                 log.debug(f"response: {response}")
 
                 if name == "embedding":
@@ -269,7 +278,7 @@ class Prompts:
                     )
                 log.debug(f"result: {result}")
 
-                return result
+                return result, llm_call_metadata
 
             except ClientError as e:
                 error_code = e.response['Error']['Code']
@@ -298,11 +307,108 @@ class Prompts:
         Asynchronous wrapper for the invoke method using asyncio.
         """
         loop = asyncio.get_running_loop()
-        result = await loop.run_in_executor(
+        result, llm_call_metadata = await loop.run_in_executor(
             None,
             self.invoke,
             name,
             text,
             skills
         )
-        return result
+        # print(result)
+        return result, llm_call_metadata
+
+    def batch_invoke(self,
+                     name,
+                     bedrock_client,
+                     s3_client,
+                     input_file_s3_url,
+                     output_file_s3_url,
+                     input_descriptions, ):
+
+        session = boto3.Session(profile_name='pssl-bedrock', region_name='us-east-1')
+        s3_client = session.client("s3")
+        bedrock_client = session.client(service_name="bedrock")
+
+        def create_jsonl_from_dataframe_with_template(df, output_file, name, skills=""):
+            prompt_config = self.prompt_configs[name].copy()
+            prompt_config.pop('ModelId')
+
+            with (open(output_file, 'w') as file):
+                for idx, row in df.iterrows():
+                    modelInput = prompt_config
+                    text = row['description']
+                    id = row['job_id']
+
+                    modelInput['messages'] = [
+                        {
+                            "role": "user",
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": getattr(Prompts, name).format(text=text, skills=skills)
+                                }
+                            ]
+                        }
+                    ]
+                    record = {
+                        "": id,
+                        "modelInput": modelInput
+                    }
+                    file.write(json.dumps(record) + '\n')
+
+        def upload_file_to_s3(file_path, bucket_name, s3_key):
+            s3_client = boto3.client('s3', region_name='us-east-1')
+            try:
+                s3_client.upload_file(file_path, bucket_name, s3_key)
+                print(f"File uploaded successfully to s3://{bucket_name}/{s3_key}")
+            except Exception as e:
+                print(f"Error uploading file: {e}")
+
+        def get_role_arn(role_name):
+            iam_client = boto3.client('iam')
+            response = iam_client.get_role(RoleName=role_name)
+            return response["Role"]["Arn"]
+
+        role_arn = get_role_arn("BedrockPermissionsRole")
+
+        input_data_config = {
+            "s3InputDataConfig": {
+                "s3Uri": "s3://fkkarami-projects/bedrock-batch-inference/input/input.jsonl"
+            }
+        }
+
+        output_data_config = {
+            "s3OutputDataConfig": {
+                "s3Uri": "s3://fkkarami-projects/bedrock-batch-inference/output/"
+            }
+        }
+
+        def generate_bedrock_job_name(prefix="bedrock-job"):
+            current_time = datetime.utcnow().strftime("%Y%m%d-%H%M%S")
+            job_name = f"{prefix}-{current_time}"
+            return job_name
+
+        response = bedrock_client.create_model_invocation_job(
+            roleArn=role_arn,
+            modelId="anthropic.claude-3-haiku-20240307-v1:0",
+            jobName=generate_bedrock_job_name(),
+            inputDataConfig=input_data_config,
+            outputDataConfig=output_data_config,
+        )
+
+        job_arn = response.get('jobArn')
+        print(f"Batch Inference Job ARN: {job_arn}")
+
+        def check_job_status(job_arn):
+            bedrock = boto3.client('bedrock', region_name='us-east-1')
+            while True:
+                status_response = bedrock.get_model_invocation_job(jobIdentifier=job_arn)
+                print(f"Job Status: {status_response['status']}")
+
+                if status_response['status'] in ['Completed', 'Failed', 'Stopped']:
+                    print("Job finished with status:", status_response['status'])
+                    break
+
+                time.sleep(5)
+
+        check_job_status(job_arn)

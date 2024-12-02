@@ -36,6 +36,9 @@ class SkillsTaxonomyAI:
         self.root = SkillsNode.from_tree_dict(tree)
         self.names = set(self.root.names())
 
+        print(self.root)
+        print(self.names)
+
     @classmethod
     def from_file(cls, filename: str) -> "SkillsTaxonomyAI":
         """
