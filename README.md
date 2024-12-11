@@ -153,6 +153,7 @@ Extract structured information from a text or HTML job posting file with:
 - Chandan K. Reddy
 - Justine S. Hastings
 - Nikhil Abhyankar
+- Farzad Karami
 
 # Citations and Credits
 
