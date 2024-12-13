@@ -204,13 +204,23 @@ def extract_skills(data_str):
 # -------------------------
 
 class ExtractQualifications(BaseModel):
+    education: Optional[str] = None
+    major: Optional[List[str]] = []
+    experience: Optional[int] = None
     qualifications: Optional[List[str]] = []
 
 class ExtractOutputModel(BaseModel):
-    job_title: Optional[str] = ""
+    job_title: Optional[str] = None
     details: Optional[List[str]] = []
     required: ExtractQualifications = ExtractQualifications()
     preferred: ExtractQualifications = ExtractQualifications()
+    benefits: Optional[List[str]] = []
+    salary: Optional[List[float]] = []
+    wage: Optional[List[float]] = []
+    entry_level: Optional[bool] = False
+    college_degree: Optional[bool] = False
+    full_time: Optional[bool] = False
+    remote: Optional[bool] = False
 
 class OccupationOutputModel(BaseModel):
     occupation: List[str]
