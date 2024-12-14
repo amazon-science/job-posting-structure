@@ -191,13 +191,23 @@ def extract_skills(data_str):
 
 
 class ExtractQualifications(BaseModel):
+    education: Optional[str] = None
+    major: Optional[List[str]] = []
+    experience: Optional[int] = None
     qualifications: Optional[List[str]] = []
 
 class ExtractOutputModel(BaseModel):
-    job_title: Optional[str] = ""
+    job_title: Optional[str] = None
     details: Optional[List[str]] = []
     required: ExtractQualifications = ExtractQualifications()
     preferred: ExtractQualifications = ExtractQualifications()
+    benefits: Optional[List[str]] = []
+    salary: Optional[List[float]] = []
+    wage: Optional[List[float]] = []
+    entry_level: Optional[bool] = False
+    college_degree: Optional[bool] = False
+    full_time: Optional[bool] = False
+    remote: Optional[bool] = False
 
 class OccupationOutputModel(BaseModel):
     occupation: List[str]
@@ -318,6 +328,12 @@ def batch_callback(batch_df, results, cache):
             cache[job_id] = job_hash
 
 
+def batch_dict(d, batch_size=1500):
+    items = list(d.items())
+    for i in range(0, len(items), batch_size):
+        yield dict(items[i:i + batch_size])
+
+
 if __name__ == "__main__":
     region_name = 'us-east-1'
     profile_name = 'pssl-bedrock'
@@ -332,6 +348,9 @@ if __name__ == "__main__":
     offline_skills_mode = False
     offline_occupation_mode = False
 
+    # Generate a session ID based on current datetime
+    session_id = datetime.now().strftime("%Y%m%d_%H%M%S")
+
     s3_client = get_boto3_client("s3", profile_name, region_name)
     bedrock_client = get_boto3_client("bedrock", profile_name, region_name)
     role_arn = get_iam_role_arn(role_name)
@@ -339,11 +358,22 @@ if __name__ == "__main__":
     with resources.open_text("jobstruct.data", "prompt_configs.json") as f:
         prompt_configs = json.load(f)
 
-    # **Batch 1: Extraction** with caching and filtering
-    task_name = "extract"
+    # Prepare logs
+    failed_batches = []
+    successful_batches = []
+    failed_log_file = os.path.join(local_folder, f"failed_batches_{session_id}.log")
+    successful_log_file = os.path.join(local_folder, f"successful_batches_{session_id}.log")
 
+    ################################
+    # Batch 1: Extraction
+    ################################
+    task_name = "extract"
     extract_input_file_offline = "tests/cost-estimation/data/extract_inputs.jsonl.out"
-    extract_output_file_offline = f"{local_folder}{task_name}_results_offline.json"
+    extract_output_file_offline = f"{local_folder}{task_name}_results_offline_{session_id}.json"
+    extract_output_file = f"{local_folder}{task_name}_results_{session_id}.json"
+
+    extraction_failed = False  # Track if any extraction batch failed
+    extract_results = {}
 
     if offline_extract_mode:
         print("Offline mode enabled for extraction. Reading local results.")
@@ -352,10 +382,8 @@ if __name__ == "__main__":
         save_results_to_json(extract_results, extract_output_file_offline)
     else:
         expanded_df = expand_parquet_file_with_id(input_parquet, target_records)
-
-        # Filter and batch
+        # Filter and batch for extraction
         batches = filter_and_prepare_extract_batch(expanded_df, cache, batch_size=1500)
-        extract_results = {}
 
         prompt_config = prompt_configs[task_name].copy()
         prompt_config.pop('modelId', None)
@@ -363,8 +391,11 @@ if __name__ == "__main__":
         output_s3_url = f"s3://{bucket_name}/bedrock-batch-inference/output-test/"
 
         for i, batch_df in enumerate(batches):
-            extract_output_file = f"{local_folder}{task_name}_results_{i}.json"
-            jsonl_file = f"{task_name}_inputs_batch_{i}.jsonl"
+            if extraction_failed:
+                # If a previous batch failed, we may decide to stop processing further extraction batches.
+                break
+
+            jsonl_file = f"{task_name}_inputs_batch_{i}_{session_id}.jsonl"
             create_jsonl_for_extract(batch_df, jsonl_file, task_name, prompt_config)
             input_s3_key = f"bedrock-batch-inference/input-test/{jsonl_file}"
             upload_file_to_s3(jsonl_file, bucket_name, input_s3_key, s3_client)
@@ -385,102 +416,166 @@ if __name__ == "__main__":
 
                 # Callback to update cache
                 batch_callback(batch_df, batch_results, cache)
+
+                # Log success
+                successful_batches.append(f"extract_batch_{i}_{session_id}")
             else:
-                print(f"Batch {i} failed with status {final_status['status']}")
+                print(f"Extraction Batch {i} failed with status {final_status['status']}")
+                extraction_failed = True
+                failed_batches.append(f"extract_batch_{i}_{session_id}")
 
-            save_results_to_json(extract_results, extract_output_file)
+        save_results_to_json(extract_results, extract_output_file)
 
-
-    # **Batch 2: Skills** (no cache filtering as per instructions)
-    task_name = "skills"
-    skills_output_file = f"{local_folder}{task_name}_results.json"
-    skills_input_file_offline = "tests/cost-estimation/data/skills_inputs.jsonl.out"
-    skills_output_file_offline = f"{local_folder}{task_name}_results_offline.json"
-
-    task_name = "occupation"
-    occupation_output_file = f"{local_folder}{task_name}_results.json"
-    occupation_input_file_offline = "tests/cost-estimation/data/occupation_inputs.jsonl.out"
-    occupation_output_file_offline = f"{local_folder}{task_name}_results_offline.json"
-
-    # **Batch 2: Skills** with filtering and caching
-    task_name = "skills"
-    if offline_skills_mode:
-        print("Offline mode enabled for skills. Reading local results.")
-        skills_records = wrap_json_file_with_array(skills_input_file_offline)
-        skills_results = load_batch_output(skills_records, "skills")
-        save_results_to_json(skills_results, skills_output_file_offline)
+    # If extraction failed at any batch, do not proceed to skills or occupation
+    if extraction_failed:
+        print("Extraction failed. Skipping Skills and Occupation tasks.")
     else:
-        skills_results = {}
-        batches = filter_and_prepare_extract_batch(expanded_df, cache, batch_size=1500)
-        prompt_config = prompt_configs[task_name].copy()
-        prompt_config.pop('modelId', None)
+        ################################
+        # Batch 2: Skills
+        ################################
+        task_name = "skills"
+        skills_output_file = f"{local_folder}{task_name}_results_{session_id}.json"
+        skills_input_file_offline = "tests/cost-estimation/data/skills_inputs.jsonl.out"
+        skills_output_file_offline = f"{local_folder}{task_name}_results_offline_{session_id}.json"
 
-        for i, batch_df in enumerate(batches):
-            skills_output_file = f"{local_folder}{task_name}_results_{i}.json"
-            jsonl_file = f"{task_name}_inputs_batch_{i}.jsonl"
-            create_jsonl_for_skills_or_occupation(batch_df, jsonl_file, task_name, prompt_config)
+        skills_failed = False
 
-            input_s3_key = f"bedrock-batch-inference/input-test/{jsonl_file}"
-            upload_file_to_s3(jsonl_file, bucket_name, input_s3_key, s3_client)
-            input_s3_url = f"s3://{bucket_name}/{input_s3_key}"
+        if offline_skills_mode:
+            print("Offline mode enabled for skills. Reading local results.")
+            skills_records = wrap_json_file_with_array(skills_input_file_offline)
+            skills_results = load_batch_output(skills_records, "skills")
+            save_results_to_json(skills_results, skills_output_file_offline)
+        else:
+            prompt_config = prompt_configs[task_name].copy()
+            prompt_config.pop('modelId', None)
 
-            response = create_bedrock_job(bedrock_client, role_arn, model_id, input_s3_url, output_s3_url)
-            job_arn = response.get('jobArn')
-            final_status = check_job_status(job_arn, bedrock_client, f"Skills Batch {i}")
+            skills_results = {}
+            skill_batches = list(batch_dict(extract_results, batch_size=1500))
 
-            if final_status['status'] == "Completed":
-                skills_s3_url = f"{output_s3_url}{job_arn.split('/')[-1]}/{jsonl_file}.out"
-                skills_local_file = download_file_from_s3(skills_s3_url, local_folder, s3_client)
-                skills_records = wrap_json_file_with_array(skills_local_file)
-                batch_results = load_batch_output(skills_records, "skills")
-                skills_results.update(batch_results)
+            for i, batch_data in enumerate(skill_batches):
+                if skills_failed:
+                    # If a previous skills batch failed, we may decide to stop further batches
+                    break
 
-                # Update cache
-                batch_callback(batch_df, batch_results, cache)
+                skills_jsonl_file = f"{task_name}_inputs_batch_{i}_{session_id}.jsonl"
+                create_jsonl_for_skills_or_occupation(
+                    batch_data, skills_jsonl_file, task_name, prompt_config
+                )
+
+                upload_file_to_s3(
+                    skills_jsonl_file,
+                    bucket_name,
+                    f"bedrock-batch-inference/input-test/{skills_jsonl_file}",
+                    s3_client
+                )
+                skills_response = create_bedrock_job(
+                    bedrock_client,
+                    role_arn,
+                    model_id,
+                    f"s3://{bucket_name}/bedrock-batch-inference/input-test/{skills_jsonl_file}",
+                    output_s3_url
+                )
+                skills_job_arn = skills_response.get('jobArn')
+                skills_status = check_job_status(skills_job_arn, bedrock_client, f"Skills Batch {i}")
+
+                if skills_status['status'] == "Completed":
+                    skills_s3_url = f"{output_s3_url}{skills_job_arn.split('/')[-1]}/{skills_jsonl_file}.out"
+                    skills_local_file = download_file_from_s3(skills_s3_url, local_folder, s3_client)
+                    skills_records = wrap_json_file_with_array(skills_local_file)
+                    batch_skills_results = load_batch_output(skills_records, "skills")
+                    # Update global skills results
+                    skills_results.update(batch_skills_results)
+
+                    successful_batches.append(f"skills_batch_{i}_{session_id}")
+                else:
+                    print(f"Skills Batch {i} failed with status {skills_status['status']}")
+                    skills_failed = True
+                    failed_batches.append(f"skills_batch_{i}_{session_id}")
+
+                # Save partial results incrementally
+                save_results_to_json(skills_results, skills_output_file)
+
+        # If skills failed at any batch, do not proceed to occupation
+        if skills_failed:
+            print("Skills processing failed. Skipping Occupation tasks.")
+        else:
+            ################################
+            # Batch 3: Occupation
+            ################################
+            task_name = "occupation"
+            occupation_output_file = f"{local_folder}{task_name}_results_{session_id}.json"
+            occupation_input_file_offline = "tests/cost-estimation/data/occupation_inputs.jsonl.out"
+            occupation_output_file_offline = f"{local_folder}{task_name}_results_offline_{session_id}.json"
+
+            occupation_failed = False
+
+            if offline_occupation_mode:
+                print("Offline mode enabled for occupation. Reading local results.")
+                occupation_records = wrap_json_file_with_array(occupation_input_file_offline)
+                occupation_results = load_batch_output(occupation_records, "occupation")
+                save_results_to_json(occupation_results, occupation_output_file_offline)
             else:
-                print(f"Skills Batch {i} failed with status {final_status['status']}")
+                prompt_config = prompt_configs[task_name].copy()
+                prompt_config.pop('modelId', None)
 
-            save_results_to_json(skills_results, skills_output_file)
+                occupation_results = {}
+                occupation_batches = list(batch_dict(extract_results, batch_size=1500))
 
-    # **Batch 3: Occupation** with filtering and caching
-    task_name = "occupation"
-    if offline_occupation_mode:
-        print("Offline mode enabled for occupation. Reading local results.")
-        occupation_records = wrap_json_file_with_array(occupation_input_file_offline)
-        occupation_results = load_batch_output(occupation_records, "occupation")
-        save_results_to_json(occupation_results, occupation_output_file_offline)
-    else:
-        occupation_results = {}
-        batches = filter_and_prepare_extract_batch(expanded_df, cache, batch_size=1500)
-        prompt_config = prompt_configs[task_name].copy()
-        prompt_config.pop('modelId', None)
+                for i, batch_data in enumerate(occupation_batches):
+                    if occupation_failed:
+                        break
 
-        for i, batch_df in enumerate(batches):
-            occupation_output_file = f"{local_folder}{task_name}_results_{i}.json"
-            jsonl_file = f"{task_name}_inputs_batch_{i}.jsonl"
-            create_jsonl_for_skills_or_occupation(batch_df, jsonl_file, task_name, prompt_config)
+                    occupation_jsonl_file = f"{task_name}_inputs_batch_{i}_{session_id}.jsonl"
+                    create_jsonl_for_skills_or_occupation(
+                        batch_data, occupation_jsonl_file, task_name, prompt_config
+                    )
 
-            input_s3_key = f"bedrock-batch-inference/input-test/{jsonl_file}"
-            upload_file_to_s3(jsonl_file, bucket_name, input_s3_key, s3_client)
-            input_s3_url = f"s3://{bucket_name}/{input_s3_key}"
+                    upload_file_to_s3(
+                        occupation_jsonl_file,
+                        bucket_name,
+                        f"bedrock-batch-inference/input-test/{occupation_jsonl_file}",
+                        s3_client
+                    )
+                    occupation_response = create_bedrock_job(
+                        bedrock_client,
+                        role_arn,
+                        model_id,
+                        f"s3://{bucket_name}/bedrock-batch-inference/input-test/{occupation_jsonl_file}",
+                        output_s3_url
+                    )
+                    occupation_job_arn = occupation_response.get('jobArn')
+                    occupation_status = check_job_status(occupation_job_arn, bedrock_client, f"Occupation Batch {i}")
 
-            response = create_bedrock_job(bedrock_client, role_arn, model_id, input_s3_url, output_s3_url)
-            job_arn = response.get('jobArn')
-            final_status = check_job_status(job_arn, bedrock_client, f"Occupation Batch {i}")
+                    if occupation_status['status'] == "Completed":
+                        occupation_s3_url = f"{output_s3_url}{occupation_job_arn.split('/')[-1]}/{occupation_jsonl_file}.out"
+                        occupation_local_file = download_file_from_s3(occupation_s3_url, local_folder, s3_client)
+                        occupation_records = wrap_json_file_with_array(occupation_local_file)
+                        batch_occupation_results = load_batch_output(occupation_records, "occupation")
+                        occupation_results.update(batch_occupation_results)
 
-            if final_status['status'] == "Completed":
-                occupation_s3_url = f"{output_s3_url}{job_arn.split('/')[-1]}/{jsonl_file}.out"
-                occupation_local_file = download_file_from_s3(occupation_s3_url, local_folder, s3_client)
-                occupation_records = wrap_json_file_with_array(occupation_local_file)
-                batch_results = load_batch_output(occupation_records, "occupation")
-                occupation_results.update(batch_results)
+                        successful_batches.append(f"occupation_batch_{i}_{session_id}")
+                    else:
+                        print(f"Occupation Batch {i} failed with status {occupation_status['status']}")
+                        occupation_failed = True
+                        failed_batches.append(f"occupation_batch_{i}_{session_id}")
 
-                # Update cache
-                batch_callback(batch_df, batch_results, cache)
-            else:
-                print(f"Occupation Batch {i} failed with status {final_status['status']}")
+                    save_results_to_json(occupation_results, occupation_output_file)
 
-            save_results_to_json(occupation_results, occupation_output_file)
-
+    # Save cache
     with open("cache.json", 'w') as file:
         json.dump(cache, file, indent=4)
+
+    # Write out the logs for failed and successful batches
+    if failed_batches:
+        with open(failed_log_file, 'w') as f:
+            for fb in failed_batches:
+                f.write(f"{fb}\n")
+
+    if successful_batches:
+        with open(successful_log_file, 'w') as f:
+            for sb in successful_batches:
+                f.write(f"{sb}\n")
+
+    print(f"Run Session ID: {session_id}")
+    print(f"Failed batches logged to: {failed_log_file}")
+    print(f"Successful batches logged to: {successful_log_file}")
