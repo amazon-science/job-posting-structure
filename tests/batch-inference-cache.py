@@ -474,7 +474,7 @@ if __name__ == "__main__":
                     model_id,
                     f"s3://{bucket_name}/bedrock-batch-inference/input-test/{skills_jsonl_file}",
                     output_s3_url
-                )
+                )atg
                 skills_job_arn = skills_response.get('jobArn')
                 skills_status = check_job_status(skills_job_arn, bedrock_client, f"Skills Batch {i}")
 

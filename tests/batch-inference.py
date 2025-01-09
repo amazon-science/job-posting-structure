@@ -256,7 +256,7 @@ if __name__ == "__main__":
     profile_name = 'pssl-bedrock'
     role_name = "BedrockPermissionsRole"
     bucket_name = "fkkarami-projects"
-    input_parquet = "tests/cost-estimation/job_descriptions_test_extraction_2024_09_30.parquet"
+    input_parquet = "tests/jobstruct/job_descriptions_test_extraction_2024_09_30.parquet"
     local_folder = "tests/cost-estimation/data/"
     target_records = 2000
     model_id = "anthropic.claude-3-haiku-20240307-v1:0"
@@ -300,10 +300,10 @@ if __name__ == "__main__":
         create_jsonl_for_extract(expanded_df, jsonl_file, task_name, prompt_config)
 
         # Upload JSONL and submit job
-        input_s3_key = f"bedrock-batch-inference/input/{jsonl_file}"
+        input_s3_key = f"bedrock-batch-inference/input-test/{jsonl_file}"
         upload_file_to_s3(jsonl_file, bucket_name, input_s3_key, s3_client)
         input_s3_url = f"s3://{bucket_name}/{input_s3_key}"
-        output_s3_url = f"s3://{bucket_name}/bedrock-batch-inference/output/"
+        output_s3_url = f"s3://{bucket_name}/bedrock-batch-inference/output-test/"
         response = create_bedrock_job(bedrock_client, role_arn, model_id, input_s3_url, output_s3_url)
         job_arn = response.get('jobArn')
         final_status = check_job_status(job_arn, bedrock_client, "Extraction")
@@ -342,10 +342,10 @@ if __name__ == "__main__":
         )
 
         # Upload JSONL and submit job
-        upload_file_to_s3(skills_jsonl_file, bucket_name, f"bedrock-batch-inference/input/{skills_jsonl_file}",
+        upload_file_to_s3(skills_jsonl_file, bucket_name, f"bedrock-batch-inference/input-test/{skills_jsonl_file}",
                           s3_client)
         skills_response = create_bedrock_job(
-            bedrock_client, role_arn, model_id, f"s3://{bucket_name}/bedrock-batch-inference/input/{skills_jsonl_file}",
+            bedrock_client, role_arn, model_id, f"s3://{bucket_name}/bedrock-batch-inference/input-test/{skills_jsonl_file}",
             output_s3_url
         )
         skills_job_arn = skills_response.get('jobArn')
@@ -387,11 +387,11 @@ if __name__ == "__main__":
 
         # Upload JSONL and submit job
         upload_file_to_s3(
-            occupation_jsonl_file, bucket_name, f"bedrock-batch-inference/input/{occupation_jsonl_file}", s3_client
+            occupation_jsonl_file, bucket_name, f"bedrock-batch-inference/input-test/{occupation_jsonl_file}", s3_client
         )
         occupation_response = create_bedrock_job(
             bedrock_client, role_arn, model_id,
-            f"s3://{bucket_name}/bedrock-batch-inference/input/{occupation_jsonl_file}", output_s3_url
+            f"s3://{bucket_name}/bedrock-batch-inference/input-test/{occupation_jsonl_file}", output_s3_url
         )
         occupation_job_arn = occupation_response.get('jobArn')
         occupation_status = check_job_status(occupation_job_arn, bedrock_client, "Occupation")

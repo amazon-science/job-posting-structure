@@ -330,6 +330,8 @@ if __name__ == "__main__":
             extract_results = load_batch_output(extract_records, "extract")
             save_results_to_json(extract_results, extract_output_file)
 
+
+
     # **Batch 2: Skills**
     task_name = "skills"
     skills_jsonl_file = f"{task_name}_inputs.jsonl"
