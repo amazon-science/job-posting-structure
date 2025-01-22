@@ -1,0 +1,48 @@
+{
+    "jobstruct_path": "/home/fkkarami/workspace/amazon/job-posting-structure/src",
+    
+    "aws": {
+      "region_name": "us-east-1",
+      "profile_name": "pssl-bedrock",
+      "role_name": "BedrockPermissionsRole",
+      "bucket_name": "fkkarami-projects"
+    },
+  
+    "execution": {
+      "create_and_upload_input_files": true,
+      "run_bedrock_jobs_end_to_end": true,
+      "record_index": [0, 5000]
+    },
+  
+    "task": {
+      "task_list": ["extract"],
+      "taxonomy_files": [
+        "/home/fkkarami/workspace/amazon/job-posting-structure/auxiliary_files/2024-10-29-Skills-Taxonomy-Proposal-1385-Skills.json", 
+        null
+      ],
+      "max_tokens": {
+        "skills": 1024,
+        "occupation": 128,
+        "extract": 4096
+      },
+      "batch_sizes": {
+        "skills": 20000,
+        "occupation": 40000,
+        "extract": 40000
+      }
+    },
+  
+    "model_id": {
+      "skills": "anthropic.claude-3-sonnet-20240229-v1:0",
+      "occupation": "anthropic.claude-3-sonnet-20240229-v1:0",
+      "extract": "anthropic.claude-3-haiku-20240307-v1:0"
+    },
+  
+    "paths": {
+      "data_path": "/home/fkkarami/workspace/amazon/job-posting-structure/auxiliary_files/two_column_df.parquet",
+      "local_folder": "/home/fkkarami/workspace/amazon/job-posting-structure/auxiliary_files/amazon-jobs-data/{session_number}/",
+      "s3_folder_input_files": "bedrock-batch-inference/{session_number}/input-amz-jobs/",
+      "s3_folder_output_files": "bedrock-batch-inference/{session_number}/output-amz-jobs/"
+    }
+  }
+  

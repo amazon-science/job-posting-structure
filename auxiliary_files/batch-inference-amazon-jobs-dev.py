@@ -1,4 +1,9 @@
 import sys
+
+jobstruct_path = "/home/fkkarami/workspace/amazon/old_ebsvolume/home/fkkarami/workspace/NASWA/job-posting-structure/src"
+if jobstruct_path not in sys.path:
+    sys.path.append(jobstruct_path)
+
 import os
 import json
 import time
@@ -8,46 +13,39 @@ import re
 import uuid
 from urllib.parse import urlparse
 from datetime import datetime
-
-from typing import List, Optional
-from tqdm import tqdm  
-
-CONFIG_FILE_PATH = "auxiliary_files/skills_occupation_config.json"
-with open(CONFIG_FILE_PATH, 'r') as f:
-    config = json.load(f)
-
-# Add jobstruct_path to sys.path if needed
-jobstruct_path = config["jobstruct_path"]
-if jobstruct_path not in sys.path:
-    sys.path.append(jobstruct_path)
-
 from jobstruct import Prompts
+from typing import List, Optional
+from tqdm import tqdm  # For progress bars
 
-# Extract values from config
-CREATE_AND_UPLOAD_INPUT_FILES = config["execution"]["create_and_upload_input_files"]
-RUN_BEDROCK_JOBS_END_TO_END   = config["execution"]["run_bedrock_jobs_end_to_end"]
-RECORD_INDEX                  = tuple(config["execution"]["record_index"])
 
-TASK_LIST      = config["task"]["task_list"]
-TAXONOMY_FILES = config["task"]["taxonomy_files"]
-MAX_TOKENS     = config["task"]["max_tokens"]
-batch_sizes    = config["task"]["batch_sizes"]
+S3_PRECOMPUTED_FOLDER = False # If True, will process precomputed JSONL files from S3
+CREATE_AND_UPLOAD_INPUT_FILES = True  # If True, will create JSONL inputs and upload them to S3
+RUN_BEDROCK_JOBS_END_TO_END = True   # If True, will create Bedrock jobs for each input JSONL, monitor status, and download/save results
+SESSION_NUMBER = '20250110-201626-1bcf2'
+RECORD_INDEX = (160000, 200000)
+TASK_LIST = [
+    'skills', 
+    'occupation'
+    ]
+TAXONOMY_FILES = [
+    "auxiliary_files/2024-10-29-Skills-Taxonomy-Proposal-1385-Skills.json", 
+    None
+    ]
 
-region_name  = config["aws"]["region_name"]
-profile_name = config["aws"]["profile_name"]
-role_name    = config["aws"]["role_name"]
-bucket_name  = config["aws"]["bucket_name"]
+MAX_TOKENS = {"skills": 1024, "occupation": 128}
 
-model_id = config["model_id"]
-
-extracted_data_path = config["paths"]["extracted_data_path"]
-# local_folder, s3_folder_input_files, and s3_folder_output_files will be formatted with session_number at runtime
+# Batch size per task
+batch_sizes = {
+    "skills": 20000,
+    "occupation": 40000
+}
 
 
 def generate_session_number() -> str:
     current_time = datetime.utcnow().strftime("%Y%m%d-%H%M%S")
     short_ubid = uuid.uuid4().hex[:5]
     return f"{current_time}-{short_ubid}"
+
 
 def generate_unique_job_name(prefix: str = "bedrock-job", session_number: str = None) -> str:
     current_time = datetime.utcnow().strftime("%Y%m%d-%H%M%S")
@@ -57,6 +55,9 @@ def generate_unique_job_name(prefix: str = "bedrock-job", session_number: str = 
     else:
         return f"{prefix}-{current_time}-{unique_id}"
 
+# ----------------------------------------------------------------
+# Text Cleaning Utility
+# ----------------------------------------------------------------
 def clean_text(text: str) -> str:
     if not text:
         return text
@@ -64,6 +65,7 @@ def clean_text(text: str) -> str:
     text = re.sub(r'(?<!\s)\s(?!\s)', '', text)
     text = re.sub(r'\s+', ' ', text)
     return text.strip()
+
 
 def get_boto3_client(service_name, profile_name=None, region_name='us-east-1'):
     session = boto3.Session(profile_name=profile_name, region_name=region_name)
@@ -81,6 +83,7 @@ def upload_file_to_s3(file_path, bucket_name, s3_key, s3_client):
         print(f"Error uploading file: {e}")
         raise
 
+
 def write_and_upload_jsonl(
     records, 
     file_prefix, 
@@ -90,10 +93,6 @@ def write_and_upload_jsonl(
     local_folder, 
     max_records_per_file
 ):
-    """
-    Write records in chunks of 'max_records_per_file' to .jsonl files and upload to S3.
-    Filenames include the start-end index of the chunk.
-    """
     num_records = len(records)
     file_paths = []
 
@@ -103,14 +102,7 @@ def write_and_upload_jsonl(
 
     for i in tqdm(range(0, num_records, max_records_per_file), desc=f"Processing {file_prefix}"):
         chunk = records[i:i + max_records_per_file]
-        
-        # Calculate index range for file name
-        start_index = i
-        end_index = min(i + max_records_per_file - 1, num_records - 1)
-        
-        # Include index range in file name
-        file_name = f"{file_prefix}_{start_index}-{end_index}.jsonl"
-        
+        file_name = f"{file_prefix}_{(i // max_records_per_file) + 1}.jsonl"
         local_file_path = os.path.join(local_folder, file_name)
 
         with open(local_file_path, 'w', encoding='utf-8') as f:
@@ -118,8 +110,7 @@ def write_and_upload_jsonl(
                 f.write(json.dumps(record) + '\n')
 
         file_paths.append(local_file_path)
-        print(f"    [INFO] Created JSONL file: {file_name} with {len(chunk)} records "
-              f"(indexes {start_index} to {end_index}).")
+        print(f"    [INFO] Created JSONL file: {file_name} with {len(chunk)} records.")
 
         file_size = os.path.getsize(local_file_path)
         print(f"    [VERBOSE] File size: {file_size / (1024 ** 3):.2f} GB. Path: {local_file_path}")
@@ -129,6 +120,7 @@ def write_and_upload_jsonl(
 
     print("[INFO] JSONL file creation and upload completed.")
     return file_paths
+
 
 def create_bedrock_job(bedrock_client, role_arn, model_id, input_s3_url, output_s3_url, prefix="bedrock-job", session_number=None):
     input_data_config = {"s3InputDataConfig": {"s3Uri": input_s3_url}}
@@ -140,6 +132,7 @@ def create_bedrock_job(bedrock_client, role_arn, model_id, input_s3_url, output_
         inputDataConfig=input_data_config,
         outputDataConfig=output_data_config,
     )
+
 
 def build_compact_hierarchy(node: dict) -> dict:
     children = node.get("children", [])
@@ -155,23 +148,35 @@ def build_compact_hierarchy(node: dict) -> dict:
 if __name__ == "__main__":
     session_number = generate_session_number()
     print(f"Session Number: {session_number}")
+    
+    region_name = 'us-east-1'
+    profile_name = 'pssl-bedrock'
+    role_name = "BedrockPermissionsRole"
+    bucket_name = "fkkarami-projects"
 
-    # Format paths with the current session_number
-    local_folder             = config["paths"]["local_folder"].format(session_number=session_number)
-    s3_folder_input_files    = config["paths"]["s3_folder_input_files"].format(session_number=session_number)
-    s3_folder_output_files   = config["paths"]["s3_folder_output_files"].format(session_number=session_number)
+    s3_folder_input_files = f'bedrock-batch-inference/{session_number}/input-amz-jobs/'
+    s3_folder_output_files = f'bedrock-batch-inference/{session_number}/output-amz-jobs/'
+    local_folder = f"auxiliary_files/amazon-jobs-data/{session_number}/"
+
+
 
     print("[INFO] Setting up AWS clients...")
-    s3_client      = get_boto3_client("s3", profile_name, region_name)
+    s3_client = get_boto3_client("s3", profile_name, region_name)
     bedrock_client = get_boto3_client("bedrock", profile_name, region_name)
-    role_arn       = get_iam_role_arn(role_name)
+    role_arn = get_iam_role_arn(role_name)
     print("[INFO] AWS clients initialized.")
 
     if CREATE_AND_UPLOAD_INPUT_FILES:
 
+
+        model_id = {
+            "skills": "anthropic.claude-3-sonnet-20240229-v1:0",
+            "occupation": "anthropic.claude-3-sonnet-20240229-v1:0"
+        }
+
+        extracted_data_path = "auxiliary_files/data_deduplicated.parquet"
         print(f"[INFO] Loading extraction data from {extracted_data_path}...")
         amazon_job_data = pd.read_parquet(extracted_data_path)
-        # Subset data based on RECORD_INDEX in the config
         amazon_job_data = amazon_job_data.iloc[RECORD_INDEX[0]:RECORD_INDEX[1]]
         print(f"[INFO] Extraction data loaded. Total records: {len(amazon_job_data)}")
 
@@ -192,8 +197,8 @@ if __name__ == "__main__":
                 model_input["anthropic_version"] = "bedrock-2023-05-31"
                 model_input["max_tokens"] = MAX_TOKENS[task_name]
                 job_title = clean_text(record['external_title'])
-                details   = clean_text("\n".join(record['external_qualifications']))
-                required  = clean_text("\n".join(record['basic_qualifications']))
+                details = clean_text("\n".join(record['external_qualifications']))
+                required = clean_text("\n".join(record['basic_qualifications']))
                 preferred = clean_text("\n".join(record['preferred_qualifications']))
                 
                 input_text = "\n\n".join([job_title, details, required, preferred])
@@ -208,8 +213,9 @@ if __name__ == "__main__":
                 records.append({"recordId": record['job_guid'], "modelInput": model_input})
 
             print(f"[INFO] Input preparation for {task_name.capitalize()} Task completed.")
+            
+            # if CREATE_AND_UPLOAD_INPUT_FILES:
             print(f"[INFO] Creating and uploading JSONL files for {task_name.capitalize()} Task...")
-
             write_and_upload_jsonl(
                 records, 
                 file_prefix=input_prefix, 
@@ -225,7 +231,11 @@ if __name__ == "__main__":
         print("[INFO] Running Bedrock jobs for all tasks...")
 
         for task_name in TASK_LIST:
-            input_prefix = f"{task_name}_inputs_{session_number}"
+            if S3_PRECOMPUTED_FOLDER:
+                session_number = SESSION_NUMBER
+            else:
+                # e.g. "skills_inputs_<session_number>"
+                input_prefix = f"{task_name}_inputs_{session_number}"
             output_folder = f"{s3_folder_output_files}{task_name}/"
 
             # List JSONL files in the S3 input folder
@@ -249,7 +259,7 @@ if __name__ == "__main__":
                     model_id=model_id[task_name], 
                     input_s3_url=jsonl_s3_url, 
                     output_s3_url=output_s3_url,
-                    prefix=f"{task_name}-job",
+                    prefix=f"{task_name}-job",    # e.g., "skills-job"
                     session_number=session_number
                 )
                 job_arn = bedrock_response.get('jobArn')
@@ -258,3 +268,14 @@ if __name__ == "__main__":
             print(f"[INFO] All jobs for {task_name.capitalize()} Task have been submitted.")
 
         print("[INFO] All Bedrock jobs have been submitted.")
+
+        # Example of how to do post-processing once jobs are complete:
+        # tasks_to_postprocess = ["skills"]  # or ["skills","occupation"]
+        # post_process_bedrock_jobs(
+        #     task_names=tasks_to_postprocess,
+        #     bucket_name=bucket_name,
+        #     s3_folder_output_files=s3_folder_output_files,
+        #     local_folder=local_folder,
+        #     s3_client=s3_client,
+        #     bedrock_client=bedrock_client
+        # )

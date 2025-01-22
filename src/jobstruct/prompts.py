@@ -29,6 +29,7 @@ class Prompts:
     Preconstructed prompts for generative AI operations.
     """
 
+
     extract = dedent("""
         Your task is to read the job posting inside the <text></text> tags and accurately extract relevant information in the JSON format shown in <schema></schema>. Be very careful. Follow the instructions to perform the task.
         <instructions>
@@ -110,6 +111,8 @@ class Prompts:
         <task>
         You must select the one or two most relevant Standard Occupational Classification (SOC) codes for the job description
         provided within the <text></text> tags.
+
+        the SOC codes are provided withing the <soc codes></soc codes> tags.
         </task>
         <instructions>
         Here are some important rules for the task:
@@ -118,6 +121,9 @@ class Prompts:
         {text}
         </text>
         - Identify one or two SOC codes that best match the job description.
+         <soc codes>
+        {soc_codes}
+         </soc codes>
         - DO NOT include descriptive text or occupation titles in your final answer, only the numeric code string.
         - Surround each code with double quotes.
 
@@ -130,6 +136,7 @@ class Prompts:
         
         Skip the preamble and the explanation.
         Be careful, think, check your answers and only then return your response. 
+        **“Return only the JSON and do not wrap your response in code blocks or triple backticks.”**
         """)
 
     embedding = ""
@@ -191,6 +198,7 @@ class Prompts:
             with resources.open_text("jobstruct.data", "prompt_configs.json") as f:
                 self.prompt_configs = json.load(f)
 
+
     @staticmethod
     def safe_literal(text: str, default: Any) -> Union[Dict, List]:
         """
@@ -230,6 +238,7 @@ class Prompts:
         name: str,
         text: str,
         skills: str = "",
+        soc_codes:str = ""
     ) -> Union[Dict, List, Tuple]:
         """
         Synchronous method to invoke the LLM, with exponential backoff retry strategy.
@@ -259,6 +268,7 @@ class Prompts:
                             "text": getattr(Prompts, name).format(
                                 text=text,
                                 skills=skills,
+                                soc_codes=soc_codes
                             )
                         }
                     ]
@@ -325,6 +335,7 @@ class Prompts:
         name: str,
         text: str,
         skills: str = "",
+        soc_codes: str = ""
     ) -> Union[Dict, List]:
         """
         Asynchronous wrapper for the invoke method using asyncio.
@@ -335,7 +346,8 @@ class Prompts:
             self.invoke,
             name,
             text,
-            skills
+            skills,
+            soc_codes
         )
         # print(result)
         return result, llm_call_metadata

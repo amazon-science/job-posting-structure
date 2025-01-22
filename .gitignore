@@ -2,8 +2,14 @@ __pycache__
 .DS_Store
 
 
-github-token.txt
+github-token
 
 venv/
 
 tests/
+
+on_demand_results_async/
+
+auxiliary_files/amazon-jobs-data/
+
+batch-processed-outputs/

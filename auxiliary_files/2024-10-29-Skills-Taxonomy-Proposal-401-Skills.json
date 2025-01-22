@@ -1,0 +1,2383 @@
+{
+  "name": "Skills",
+  "children": [
+    {
+      "name": "Accounting",
+      "children": [
+        {
+          "name": "Financial Accounting",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Managerial Accounting",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Tax Accounting",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Auditing",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Payroll",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Accounts Payable",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Accounts Receivable",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Bookkeeping",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Financial Reporting",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Cost Accounting",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Budget Analysis",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Financial Analysis",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Accounting Software",
+          "children": [
+            {
+              "name": "QuickBooks",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Xero",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "FreshBooks",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "SAP",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Oracle",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        }
+      ],
+      "attributes": {}
+    },
+    {
+      "name": "Administration",
+      "children": [
+        {
+          "name": "Office Management",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Records Management",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Scheduling",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Inventory Management",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Facilities Management",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Event Planning",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Customer Service",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Data Entry",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Filing",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Typing",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Accounts Payable/Receivable",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Human Resources",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Project Management",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Budgeting",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Procurement",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Contract Management",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        }
+      ],
+      "attributes": {}
+    },
+    {
+      "name": "Analysis",
+      "children": [
+        {
+          "name": "Data Analysis",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Statistical Analysis",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Business Analysis",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Market Analysis",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Quantitative Analysis",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Qualitative Analysis",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Requirements Analysis",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Risk Analysis",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Trend Analysis",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Competitive Analysis",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Root Cause Analysis",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Gap Analysis",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "SWOT Analysis",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Predictive Analytics",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Exploratory Data Analysis",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        }
+      ],
+      "attributes": {}
+    },
+    {
+      "name": "Arts",
+      "children": [
+        {
+          "name": "Visual Arts",
+          "children": [
+            {
+              "name": "Painting",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Drawing",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Sculpture",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Photography",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Graphic Design",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Illustration",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Animation",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Video Production",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Performing Arts",
+          "children": [
+            {
+              "name": "Acting",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Dance",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Music",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Theater",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Singing",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Literary Arts",
+          "children": [
+            {
+              "name": "Creative Writing",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Poetry",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Storytelling",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Journalism",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        }
+      ],
+      "attributes": {}
+    },
+    {
+      "name": "Business",
+      "children": [
+        {
+          "name": "Management",
+          "children": [
+            {
+              "name": "Operations Management",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Strategic Planning",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Change Management",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Team Leadership",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Finance",
+          "children": [
+            {
+              "name": "Financial Modeling",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Forecasting",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Marketing",
+          "children": [
+            {
+              "name": "Digital Marketing",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Social Media Marketing",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Content Marketing",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Email Marketing",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Search Engine Optimization (SEO)",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Sales",
+          "children": [
+            {
+              "name": "Prospecting",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Negotiation",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Client Relationship Management",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Sales Strategy",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Sales Forecasting",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": true
+          }
+        }
+      ],
+      "attributes": {}
+    },
+    {
+      "name": "Communications",
+      "children": [
+        {
+          "name": "Written Communication",
+          "children": [
+            {
+              "name": "Report Writing",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Technical Writing",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Copywriting",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Proposal Writing",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Email Writing",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Content Writing",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Verbal Communication",
+          "children": [
+            {
+              "name": "Public Speaking",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Presentation Skills",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Interpersonal Communication",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Active Listening",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Negotiation Skills",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Conflict Resolution",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Non-Verbal Communication",
+          "children": [
+            {
+              "name": "Body Language",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Facial Expressions",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Tone of Voice",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Eye Contact",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Cross-Cultural Communication",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Teamwork and Collaboration",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Training and Coaching",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        }
+      ],
+      "attributes": {}
+    },
+    {
+      "name": "Critical Thinking",
+      "children": [
+        {
+          "name": "Problem Solving",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Decision Making",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Analytical Thinking",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Logical Reasoning",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Attention to Detail",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Creativity",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Adaptability",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        }
+      ],
+      "attributes": {}
+    },
+    {
+      "name": "Education",
+      "children": [
+        {
+          "name": "Teaching",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Curriculum Development",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Classroom Management",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Lesson Planning",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Student Assessment",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Educational Technology",
+          "children": [
+            {
+              "name": "Learning Management Systems",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Educational Software",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Online Learning Platforms",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Special Education",
+          "children": [
+            {
+              "name": "Individualized Education Plans",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Behavior Management",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Assistive Technology",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Educational Administration",
+          "children": [
+            {
+              "name": "School Policy Development",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Budgeting and Finance",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Staff Management",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        }
+      ],
+      "attributes": {}
+    },
+    {
+      "name": "Engineering",
+      "children": [
+        {
+          "name": "Software Engineering",
+          "children": [
+            {
+              "name": "Programming Languages",
+              "children": [
+                {
+                  "name": "Python",
+                  "children": [],
+                  "attributes": {}
+                },
+                {
+                  "name": "Java",
+                  "children": [],
+                  "attributes": {}
+                },
+                {
+                  "name": "C++",
+                  "children": [],
+                  "attributes": {}
+                },
+                {
+                  "name": "JavaScript",
+                  "children": [],
+                  "attributes": {}
+                },
+                {
+                  "name": "Ruby",
+                  "children": [],
+                  "attributes": {}
+                },
+                {
+                  "name": "C#",
+                  "children": [],
+                  "attributes": {}
+                }
+              ],
+              "attributes": {}
+            },
+            {
+              "name": "Web Development",
+              "children": [
+                {
+                  "name": "HTML",
+                  "children": [],
+                  "attributes": {}
+                },
+                {
+                  "name": "CSS",
+                  "children": [],
+                  "attributes": {}
+                },
+                {
+                  "name": "JavaScript Frameworks",
+                  "children": [
+                    {
+                      "name": "React",
+                      "children": [],
+                      "attributes": {}
+                    },
+                    {
+                      "name": "Angular",
+                      "children": [],
+                      "attributes": {}
+                    },
+                    {
+                      "name": "Vue.js",
+                      "children": [],
+                      "attributes": {}
+                    }
+                  ],
+                  "attributes": {}
+                },
+                {
+                  "name": "Backend Frameworks",
+                  "children": [
+                    {
+                      "name": "Node.js",
+                      "children": [],
+                      "attributes": {}
+                    },
+                    {
+                      "name": "Django",
+                      "children": [],
+                      "attributes": {}
+                    },
+                    {
+                      "name": "Ruby on Rails",
+                      "children": [],
+                      "attributes": {}
+                    }
+                  ],
+                  "attributes": {}
+                }
+              ],
+              "attributes": {}
+            },
+            {
+              "name": "Mobile Development",
+              "children": [
+                {
+                  "name": "Android Development",
+                  "children": [
+                    {
+                      "name": "Kotlin",
+                      "children": [],
+                      "attributes": {}
+                    }
+                  ],
+                  "attributes": {}
+                },
+                {
+                  "name": "iOS Development",
+                  "children": [
+                    {
+                      "name": "Swift",
+                      "children": [],
+                      "attributes": {}
+                    },
+                    {
+                      "name": "Objective-C",
+                      "children": [],
+                      "attributes": {}
+                    }
+                  ],
+                  "attributes": {}
+                }
+              ],
+              "attributes": {}
+            },
+            {
+              "name": "Database Management",
+              "children": [
+                {
+                  "name": "SQL",
+                  "children": [],
+                  "attributes": {}
+                },
+                {
+                  "name": "NoSQL",
+                  "children": [
+                    {
+                      "name": "MongoDB",
+                      "children": [],
+                      "attributes": {}
+                    },
+                    {
+                      "name": "Cassandra",
+                      "children": [],
+                      "attributes": {}
+                    }
+                  ],
+                  "attributes": {}
+                }
+              ],
+              "attributes": {}
+            },
+            {
+              "name": "Version Control",
+              "children": [
+                {
+                  "name": "Git",
+                  "children": [],
+                  "attributes": {}
+                }
+              ],
+              "attributes": {}
+            },
+            {
+              "name": "Agile Methodologies",
+              "children": [
+                {
+                  "name": "Scrum",
+                  "children": [],
+                  "attributes": {}
+                },
+                {
+                  "name": "Kanban",
+                  "children": [],
+                  "attributes": {}
+                }
+              ],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Hardware Engineering",
+          "children": [
+            {
+              "name": "Electrical Engineering",
+              "children": [
+                {
+                  "name": "Circuit Design",
+                  "children": [],
+                  "attributes": {}
+                },
+                {
+                  "name": "Embedded Systems",
+                  "children": [],
+                  "attributes": {}
+                }
+              ],
+              "attributes": {}
+            },
+            {
+              "name": "Mechanical Engineering",
+              "children": [
+                {
+                  "name": "CAD",
+                  "children": [
+                    {
+                      "name": "AutoCAD",
+                      "children": [],
+                      "attributes": {}
+                    },
+                    {
+                      "name": "SolidWorks",
+                      "children": [],
+                      "attributes": {}
+                    }
+                  ],
+                  "attributes": {}
+                },
+                {
+                  "name": "3D Printing",
+                  "children": [],
+                  "attributes": {}
+                }
+              ],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Civil Engineering",
+          "children": [
+            {
+              "name": "Structural Analysis",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Construction Management",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        }
+      ],
+      "attributes": {}
+    },
+    {
+      "name": "Evaluation",
+      "children": [
+        {
+          "name": "Metrics and Measurements",
+          "children": [
+            {
+              "name": "Key Performance Indicators (KPIs)",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Return on Investment (ROI)",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Conversion Rates",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Customer Satisfaction Metrics",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Testing and Quality Assurance",
+          "children": [
+            {
+              "name": "Usability Testing",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "A/B Testing",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Regression Testing",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Performance Testing",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Research Methods",
+          "children": [
+            {
+              "name": "Surveys",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Focus Groups",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Interviews",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Ethnographic Studies",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        }
+      ],
+      "attributes": {}
+    },
+    {
+      "name": "Health",
+      "children": [
+        {
+          "name": "Medical Knowledge",
+          "children": [
+            {
+              "name": "Anatomy",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Physiology",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Pathology",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Pharmacology",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Medical Terminology",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Patient Care",
+          "children": [
+            {
+              "name": "Bedside Manner",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Patient Education",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Emotional Support",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Cultural Competence",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Healthcare Operations",
+          "children": [
+            {
+              "name": "Medical Coding",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Medical Billing",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Electronic Health Records (EHR)",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Healthcare Regulations",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Specialized Areas",
+          "children": [
+            {
+              "name": "Nursing",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Dentistry",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Radiology",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Surgery",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Mental Health",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        }
+      ],
+      "attributes": {}
+    },
+    {
+      "name": "Humanities",
+      "children": [
+        {
+          "name": "Languages",
+          "children": [
+            {
+              "name": "English",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Spanish",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "French",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "German",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Mandarin",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Arabic",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Literature",
+          "children": [
+            {
+              "name": "Fiction Writing",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Literary Analysis",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Editing",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "History",
+          "children": [
+            {
+              "name": "World History",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "American History",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "European History",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Ancient Civilizations",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Philosophy",
+          "children": [
+            {
+              "name": "Ethics",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Logic",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Political Philosophy",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Metaphysics",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": true
+          }
+        }
+      ],
+      "attributes": {}
+    },
+    {
+      "name": "Law",
+      "children": [
+        {
+          "name": "Legal Research",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Contract Drafting",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Litigation",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Corporate Law",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Intellectual Property Law",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Tax Law",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Employment Law",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Real Estate Law",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Legal Writing",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Regulatory Compliance",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        }
+      ],
+      "attributes": {}
+    },
+    {
+      "name": "Listening",
+      "children": [
+        {
+          "name": "Comprehension",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Nonverbal Communication",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Open-mindedness",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Questioning",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Summarizing",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        }
+      ],
+      "attributes": {}
+    },
+    {
+      "name": "Manufacturing",
+      "children": [
+        {
+          "name": "Production Planning",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Quality Control",
+          "children": [
+            {
+              "name": "Statistical Process Control",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Inspection Techniques",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Defect Tracking",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Lean Manufacturing",
+          "children": [
+            {
+              "name": "5S",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Kaizen",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Value Stream Mapping",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Supply Chain Management",
+          "children": [
+            {
+              "name": "Logistics",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Supplier Relationship Management",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Manufacturing Processes",
+          "children": [
+            {
+              "name": "CNC Machining",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Welding",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Injection Molding",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Assembly",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Industrial Safety",
+          "children": [
+            {
+              "name": "Lockout/Tagout",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Personal Protective Equipment (PPE)",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Hazard Identification and Control",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Maintenance",
+          "children": [
+            {
+              "name": "Preventive Maintenance",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Troubleshooting",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Repair",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        }
+      ],
+      "attributes": {}
+    },
+    {
+      "name": "Production",
+      "children": [],
+      "attributes": {}
+    },
+    {
+      "name": "Public Safety",
+      "children": [
+        {
+          "name": "Law Enforcement",
+          "children": [
+            {
+              "name": "Criminal Investigation",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Patrol Procedures",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Firearms Training",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Defensive Tactics",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Crisis Intervention",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Fire and Rescue",
+          "children": [
+            {
+              "name": "Fire Suppression",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Emergency Medical Services",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Hazardous Materials Response",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Technical Rescue",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Fire Prevention",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Incident Command System",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Emergency Management",
+          "children": [
+            {
+              "name": "Disaster Preparedness",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Emergency Operations",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Incident Response",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Crisis Communication",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Resource Management",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Continuity Planning",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        }
+      ],
+      "attributes": {}
+    },
+    {
+      "name": "Reading",
+      "children": [
+        {
+          "name": "Vocabulary",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Fluency",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Critical Analysis",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Speed Reading",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Proofreading",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Summarization",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Research",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Note-taking",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        }
+      ],
+      "attributes": {}
+    },
+    {
+      "name": "Science",
+      "children": [
+        {
+          "name": "Physics",
+          "children": [
+            {
+              "name": "Mechanics",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Electromagnetism",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Thermodynamics",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Quantum Mechanics",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Astrophysics",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Chemistry",
+          "children": [
+            {
+              "name": "Organic Chemistry",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Inorganic Chemistry",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Analytical Chemistry",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Physical Chemistry",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Biochemistry",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Biology",
+          "children": [
+            {
+              "name": "Molecular Biology",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Genetics",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Microbiology",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Ecology",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Zoology",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Botany",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Earth Science",
+          "children": [
+            {
+              "name": "Geology",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Oceanography",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Meteorology",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Environmental Science",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Computer Science",
+          "children": [
+            {
+              "name": "Programming",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Algorithms",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Data Structures",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Databases",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Computer Networks",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        }
+      ],
+      "attributes": {}
+    },
+    {
+      "name": "Social",
+      "children": [
+        {
+          "name": "Teamwork",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Emotional Intelligence",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        },
+        {
+          "name": "Networking",
+          "children": [],
+          "attributes": {
+            "terminal": true
+          }
+        }
+      ],
+      "attributes": {}
+    },
+    {
+      "name": "Speaking",
+      "children": [
+        {
+          "name": "Persuasion",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Clarity of Speech",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Diction",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Voice Projection",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Confidence",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Audience Engagement",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        }
+      ],
+      "attributes": {}
+    },
+    {
+      "name": "Transportation",
+      "children": [
+        {
+          "name": "Trucking",
+          "children": [
+            {
+              "name": "CDL Licensing",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Route Planning",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Cargo Handling",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Vehicle Inspection",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Logbook Management",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Aviation",
+          "children": [
+            {
+              "name": "Pilot Licensing",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Aircraft Systems",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Flight Operations",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Air Traffic Control",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Aviation Regulations",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Maritime",
+          "children": [
+            {
+              "name": "Vessel Operations",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Navigation",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Cargo Operations",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Maritime Regulations",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Seamanship",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Public Transportation",
+          "children": [
+            {
+              "name": "Bus Operations",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Rail Operations",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Passenger Services",
+              "children": [],
+              "attributes": {}
+            },
+            {
+              "name": "Transportation Regulations",
+              "children": [],
+              "attributes": {}
+            }
+          ],
+          "attributes": {
+            "terminal": false
+          }
+        }
+      ],
+      "attributes": {}
+    },
+    {
+      "name": "Writing",
+      "children": [
+        {
+          "name": "Business Writing",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Blogging",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Scriptwriting",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Grant Writing",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Resume Writing",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Academic Writing",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "SEO Writing",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        },
+        {
+          "name": "Ghostwriting",
+          "children": [],
+          "attributes": {
+            "terminal": false
+          }
+        }
+      ],
+      "attributes": {}
+    }
+  ],
+  "attributes": {}
+}
