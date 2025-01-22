@@ -11,7 +11,7 @@
     "execution": {
       "create_and_upload_input_files": true,
       "run_bedrock_jobs_end_to_end": true,
-      "record_index": [70000, 110000]
+      "record_index": [110000, 150000]
     },
   
     "task": {

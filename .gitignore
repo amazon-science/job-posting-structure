@@ -13,3 +13,7 @@ on_demand_results_async/
 auxiliary_files/amazon-jobs-data/
 
 batch-processed-outputs/
+
+auxiliary_files/data_deduplicated.parquet
+
+prompt_output_lengths.log
