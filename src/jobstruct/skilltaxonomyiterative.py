@@ -11,8 +11,8 @@ class SkillTaxonomy:
 
     def get_bedrock_response(self, content, max_tokens=1024*4,
                               model_id="anthropic.claude-3-5-sonnet-20240620-v1:0",
-                                anthropic_version="bedrock-2023-05-31", max_retries=100,
-                                  backoff_factor=2, temperature=0, debug_level=0):
+                              anthropic_version="bedrock-2023-05-31", max_retries=100,
+                              backoff_factor=2, temperature=0, debug_level=0):
         if debug_level >= 2:
             print("\n--- get_bedrock_response() called ---")
             print("Prompt content:\n", content)
@@ -48,6 +48,7 @@ class SkillTaxonomy:
         return None
 
     def create_subskills_prompt(self, family_name, current_subtree, max_sub_skills=10):
+        # Note: the prompt now instructs the LLM to return JSON that should be merged into the "skills" key.
         prompt = f"""
 You are an AI assistant helping to expand a skill taxonomy tree.
 We have a skill family named "{family_name}" with this JSON structure:
@@ -58,9 +59,9 @@ Please add up to {max_sub_skills} new sub-skills under "{family_name}".
 If you cannot generate {max_sub_skills} quality and relevant sub-skills, provide only as many as appropriate.
 Each sub-skill must have:
   - "description": a short string describing that sub-skill
-  - "sub_skills": an empty dict or further nested structure if needed
+  - "skills": an empty dict or further nested structure if needed
 
-Return ONLY the JSON that should be merged under this skill family's "sub_skills" key.
+Return ONLY the JSON that should be merged under this skill family's "skills" key.
 No extra explanation, no markdown.
         """
         return prompt.strip()
@@ -71,8 +72,8 @@ No extra explanation, no markdown.
         for family_name, family_data in skill_tree.items():
             if family_name == target_family:
                 return family_data, skill_tree, family_name
-            if isinstance(family_data, dict) and "sub_skills" in family_data and isinstance(family_data["sub_skills"], dict):
-                found, parent, parent_key = self.find_family_by_name(family_data["sub_skills"], target_family)
+            if isinstance(family_data, dict) and "skills" in family_data and isinstance(family_data["skills"], dict):
+                found, parent, parent_key = self.find_family_by_name(family_data["skills"], target_family)
                 if found is not None:
                     return found, parent, parent_key
         return None, None, None
@@ -84,19 +85,19 @@ No extra explanation, no markdown.
                 return
             for fam_name, fam_data in current_dict.items():
                 if isinstance(fam_data, dict):
-                    sub_skills = fam_data.get("sub_skills", {})
-                    if not sub_skills:
+                    children = fam_data.get("skills", {})
+                    if not children:
                         results.append((fam_name, fam_data, current_dict, fam_name))
                     else:
-                        dfs_recursive(sub_skills)
+                        dfs_recursive(children)
         dfs_recursive(skill_tree)
         return results
 
     def apply_expansion(self, parent_dict, expansion_data):
-        if "sub_skills" not in parent_dict:
-            parent_dict["sub_skills"] = {}
+        if "skills" not in parent_dict:
+            parent_dict["skills"] = {}
         for new_family_name, new_family_info in expansion_data.items():
-            parent_dict["sub_skills"][new_family_name] = new_family_info
+            parent_dict["skills"][new_family_name] = new_family_info
 
     def expand_single_family(self, skill_tree, family_name, max_sub_skills=10, debug_level=0):
         tree_copy = copy.deepcopy(skill_tree)
@@ -109,7 +110,7 @@ No extra explanation, no markdown.
             if debug_level >= 1:
                 print(msg)
             return tree_copy, skill_tree, msg
-        if "sub_skills" in subtree and subtree["sub_skills"]:
+        if "skills" in subtree and subtree["skills"]:
             msg = f"ERROR: Skill family '{family_name}' is not a leaf (it already has sub-skills)."
             if debug_level >= 1:
                 print(msg)
@@ -182,23 +183,35 @@ No extra explanation, no markdown.
                 if isinstance(data, dict):
                     stats["total_families"] += 1
                     stats["max_depth"] = max(stats["max_depth"], depth)
-                    if not data.get("sub_skills"):
+                    if not data.get("skills"):
                         stats["leaf_families"] += 1
                     else:
-                        dfs(data["sub_skills"], depth+1)
+                        dfs(data["skills"], depth+1)
         dfs(skill_tree, 1)
         return stats
 
-    def gather_families_list(self, skill_tree):
+    # def gather_families_list(self, skill_tree):
+    #     results = []
+    #     def dfs(tree):
+    #         if not isinstance(tree, dict):
+    #             return
+    #         for fam, data in tree.items():
+    #             results.append(fam)
+    #             if data.get("skills"):
+    #                 dfs(data["skills"])
+    #     dfs(skill_tree)
+    #     return results
+    
+    def gather_all_families(self, skill_tree):
         results = []
-        def dfs(tree):
-            if not isinstance(tree, dict):
+        def dfs_recursive(current_dict):
+            if not isinstance(current_dict, dict):
                 return
-            for fam, data in tree.items():
-                results.append(fam)
-                if data.get("sub_skills"):
-                    dfs(data["sub_skills"])
-        dfs(skill_tree)
+            for fam_name, fam_data in current_dict.items():
+                results.append((fam_name, fam_data, current_dict, fam_name))
+                if isinstance(fam_data, dict) and "skills" in fam_data:
+                    dfs_recursive(fam_data["skills"])
+        dfs_recursive(skill_tree)
         return results
 
     def chunking_plan_prompt(self, tree_stats, all_families):
@@ -224,10 +237,10 @@ Return ONLY the JSON.
                 if fam in families_list:
                     out[fam] = data
                 else:
-                    if isinstance(data, dict) and data.get("sub_skills"):
-                        deeper = dfs_extract(data["sub_skills"])
+                    if isinstance(data, dict) and data.get("skills"):
+                        deeper = dfs_extract(data["skills"])
                         if deeper:
-                            out[fam] = {"description": data.get("description", ""), "sub_skills": deeper}
+                            out[fam] = {"description": data.get("description", ""), "skills": deeper}
             return out
         return dfs_extract(skill_tree)
 
@@ -242,8 +255,8 @@ Return ONLY the JSON.
         prompt = f"""
 You are an expert in skill taxonomy quality control.
 Below is a skill taxonomy (in JSON) with families structured as:
-{{ "Family Name": {{ "description": "...", "sub_skills": {{ ... }} }} }}
-Perform a quality check. In "updated_tree", return an improved version that preserves existing sub-skills,
+{{ "Family Name": {{ "description": "...", "skills": {{ ... }} }} }}
+Perform a quality check. In "updated_tree", return an improved version that preserves existing skills,
 adds additional ones where needed, and omits irrelevant or too narrow keys. In "changes_description",
 explain all changes (both additions and omissions) and your rationale.
 Return ONLY a valid JSON object with exactly these two keys.
@@ -342,7 +355,7 @@ The input tree is:
             final_changes = "\n\n".join(combined_changes)
             return original_tree_copy, working_tree, final_changes
 
-    def build_skill_tree(self, initial_tree, last_level, debug_level=0):
+    def build_skill_tree(self, initial_tree, last_level, max_sub_skills, debug_level=0):
         tree = copy.deepcopy(initial_tree)
         total_iterations = last_level - 1
         print(f"\nStarting iterative build: 0 / {total_iterations} iterations complete. (Current depth: 1)")
@@ -357,7 +370,7 @@ The input tree is:
                 print(f"\n--- Iteration {iteration} (Expanding at depth {current_depth}) ---")
             else:
                 print(f"Iteration {iteration} / {total_iterations} (Current depth: {current_depth})")
-            _, tree = self.expand_all_families(tree, max_sub_skills=3, debug_level=debug_level)
+            _, tree = self.expand_all_families(tree, max_sub_skills, debug_level=debug_level)
             current_depth += 1
             if debug_level >= 2:
                 stats = self.compute_tree_stats(tree)
@@ -384,11 +397,7 @@ The input tree is:
             is_last = i == len(items) - 1
             connector = "└──" if is_last else "├──"
             print(f"{prefix}{connector} {key}")
-            next_items = None
-            if "skills" in value:
-                next_items = value["skills"]
-            elif "sub_skills" in value:
-                next_items = value["sub_skills"]
+            next_items = value.get("skills")
             if isinstance(next_items, dict):
                 new_prefix = prefix + ("    " if is_last else "│   ")
                 self.print_hierarchy_tree(next_items, max_depth, current_level + 1, new_prefix)
