@@ -73,26 +73,29 @@ class Prompts:
     skills = dedent("""\
         You are a helpful assistant.
 
-        The skill tree provided within <skills></skills> is a *hierarchical dictionary* where:
-        - Each *key* is a skill name.
-        - Its *value* is another dictionary representing child skills.
-        - Leaf nodes are empty dictionaries.
+        The skill list provided within <skills></skills> is a list of candidate skills.
 
         Your task is to:
         1. Read the job requirements in the <text></text> tags.
-        2. Map each qualification to relevant skills **only** if they appear in the provided hierarchical skill dictionary.
-        3. **If more than 10 relevant skills exist, return exactly the 10 most relevant** and omit the rest.
-        4. Return a valid JSON array of **double-quoted** strings (e.g., ["SkillA", "SkillB"]) **without** additional commentary.
-        5. Return an empty array ([]) if no skills match.
+        2. Map each qualification to relevant skills in the provided skills list.
+        3. **If any skill is identified in the job posting that is not part of the skills list or has a closely related skill missing, append the 
+                    marker [NEW_SKILL] directly to that skill (i.e., include it in the string) rather than listing it as a separate item.**
+        4. Internally reason about your selections by assigning a confidence score to each selected skill based on their relevancy to the job requirements.
+        5. Rank the deduced skills based on these confidence scores and output no more than 8 skills in total. If more than 8 relevant skills exist, 
+                    select only the 8 most relevant.
+        6. **Do not include any of your internal reasoning or the confidence scores in the final output.** The final output must be a valid JSON array 
+                    of **double-quoted** strings (e.g., ["SkillA", "SkillB"]) without any additional commentary.
+        7. If no skills match, return an empty array ([]) without additional commentary.
 
         **Additional strict instructions**:
-        • **Select only skill names that appear exactly (verbatim) in the provided taxonomy.**  
-            - If a skill is spelled differently or partially matches, skip it.
-            - If any qualification does not match a skill’s exact name in the taxonomy, do not include it.
-        • **Never introduce synonyms, expansions, or new skill labels**. No rephrasing or approximate matches.
-        • **Never exceed 10 skills total in your final array.** If more than 10 are valid, select only the top 10 you judge as “most relevant.”
-        • **MAKE SURE YOU ARE NOT REAPEATING OR BRINGING QUALIFICATIONS INTO THE OUTPUT. ONLY DEDUCTED SKILLS**
-        • If you are unsure or cannot find an exact skill in the taxonomy, **omit** it.
+        • **Select only skill names that appear exactly (verbatim) in the provided skills list.**  
+            - Do not include skills that are spelled differently or only partially match.
+            - Do not introduce synonyms, expansions, or new skill labels.
+        • **Never exceed 8 skills total in your final output.**
+        • **Do not repeat qualifications or include any content other than the deduced skills.**
+        • If you are unsure or cannot find an exact match, **omit** the qualification.
+        • **If a new skill is introduced that does not match an existing skills list skill, append the marker 
+                    [NEW_SKILL] to that skill string instead of adding it as a separate element.**
         • The final output must be a valid JSON array with **double-quoted** strings, and **nothing else**.
 
         <text>
@@ -105,6 +108,45 @@ class Prompts:
 
         Please output **only** the skills array in valid JSON. **No** additional reasoning or explanation.
         """)
+
+    skills_resume = dedent("""\
+        You are a helpful assistant.
+
+        The skill list provided within <skills></skills> is a list of candidate skills.
+
+        Your task is to:
+        1. Read the resume text in the <text></text> tags.
+        2. Map each qualification to relevant skills in the provided skills list.
+        3. **If any skill is identified in the resume that is not part of the skills list or has a closely related skill missing, append the marker [NEW_SKILL] directly to that skill (i.e., include it in the string) rather than listing it as a separate item.**
+        4. Internally reason about your selections by assigning a confidence score to each selected skill based on their relevancy to the resume content.
+        5. Rank the deduced skills based on these confidence scores and output no more than 8 skills in total. If more than 8 relevant skills exist, select only the 8 most relevant.
+        6. **Do not include any of your internal reasoning or the confidence scores in the final output.** The final output must be a valid JSON array of **double-quoted** strings (e.g., ["SkillA", "SkillB"]) without any additional commentary.
+        7. If no skills match, return an empty array ([]) without additional commentary.
+
+        **Additional strict instructions**:
+        • **Select only skill names that appear exactly (verbatim) in the provided skills list.**  
+            - Do not include skills that are spelled differently or only partially match.
+            - Do not introduce synonyms, expansions, or new skill labels.
+        • **Never exceed 8 skills total in your final output.**
+        • **Do not repeat qualifications or include any content other than the deduced skills.**
+        • If you are unsure or cannot find an exact match, **omit** the qualification.
+        • **If a new skill is introduced that does not match an existing skills list skill, append the marker [NEW_SKILL] to that skill string instead of adding it as a separate element.**
+        • The final output must be a valid JSON array with **double-quoted** strings, and **nothing else**.
+
+        <text>
+        {text}
+        </text>
+
+        <skills>
+        {skills}
+        </skills>
+
+        Please output **only** the skills array in valid JSON. **No** additional reasoning or explanation.
+        """)
+
+
+
+
 
     occupation = dedent("""
         You are a helpful assistant.
@@ -238,42 +280,52 @@ class Prompts:
         name: str,
         text: str,
         skills: str = "",
-        soc_codes:str = ""
+        # soc_codes:str = ""
     ) -> Union[Dict, List, Tuple]:
         """
         Synchronous method to invoke the LLM, with exponential backoff retry strategy.
         """
+        with open('/home/fkkarami/workspace/amazon/job-posting-structure/src/jobstruct/data/soc_codes.json', 'r') as file:
+            soc_codes = json.load(file)
         if not hasattr(Prompts, name):
             raise ValueError(f"{name} is an unrecognized prompt")
-        if name not in self.prompt_configs:
-            raise ValueError(f"{name} is missing from prompt_configs")
+        # if name not in self.prompt_configs:
+        #     raise ValueError(f"{name} is missing from prompt_configs")
         log = logging.getLogger("jobstruct.Prompts.invoke")
 
         if not hasattr(Prompts, name):
             raise ValueError(f"{name} is an unrecognized prompt")
-        if name not in self.prompt_configs:
-            raise ValueError(f"{name} is missing from prompt_configs")
 
-        prompt_config = self.prompt_configs[name].copy()
+        if name in ['skills','skills_resume']:
+            task_name = 'skills'
+        else:
+            task_name = name
+        prompt_config = self.prompt_configs[task_name].copy()
         modelId = prompt_config.pop("modelId")
         if name == "embedding":
             prompt_config["inputText"] = text
         else:
+            if name == 'extract':
+                # print(Prompts.extract)
+                prompt_body = Prompts.extract.format(text=text)
+            elif name == 'skills':
+                prompt_body = Prompts.skills.format(text=text, skills=skills)
+            elif name == 'skills_resume':
+                prompt_body = Prompts.skills_resume.format(text=text, skills=skills)
+            elif name == 'occupation':
+                prompt_body = Prompts.occupation.format(text=text, soc_codes=soc_codes)
             prompt_config["messages"] = [
                 {
                     "role": "user",
                     "content": [
                         {
                             "type": "text",
-                            "text": getattr(Prompts, name).format(
-                                text=text,
-                                skills=skills,
-                                soc_codes=soc_codes
-                            )
+                            "text": prompt_body
                         }
                     ]
                 }
             ]
+        
         # print(prompt_config["messages"][0]["content"])
         body = json.dumps(prompt_config)
         log.debug(f"'{name}' body: {body}")
@@ -334,12 +386,13 @@ class Prompts:
         self,
         name: str,
         text: str,
-        skills: str = "",
-        soc_codes: str = ""
+        skills: str,
+        # soc_codes: str = ""
     ) -> Union[Dict, List]:
         """
         Asynchronous wrapper for the invoke method using asyncio.
         """
+        print(skills)
         loop = asyncio.get_running_loop()
         result, llm_call_metadata = await loop.run_in_executor(
             None,
@@ -347,104 +400,10 @@ class Prompts:
             name,
             text,
             skills,
-            soc_codes
+            # soc_codes
         )
         # print(result)
         return result, llm_call_metadata
 
-    def batch_invoke(self,
-                     name,
-                     bedrock_client,
-                     s3_client,
-                     input_file_s3_url,
-                     output_file_s3_url,
-                     input_descriptions, ):
 
-        session = boto3.Session(profile_name='pssl-bedrock', region_name='us-east-1')
-        s3_client = session.client("s3")
-        bedrock_client = session.client(service_name="bedrock")
-
-        def create_jsonl_from_dataframe_with_template(df, output_file, name, skills=""):
-            prompt_config = self.prompt_configs[name].copy()
-            prompt_config.pop('ModelId')
-
-            with (open(output_file, 'w') as file):
-                for idx, row in df.iterrows():
-                    modelInput = prompt_config
-                    text = row['description']
-                    id = row['job_id']
-
-                    modelInput['messages'] = [
-                        {
-                            "role": "user",
-                            "content": [
-                                {
-                                    "type": "text",
-                                    "text": getattr(Prompts, name).format(text=text, skills=skills)
-                                }
-                            ]
-                        }
-                    ]
-                    record = {
-                        "": id,
-                        "modelInput": modelInput
-                    }
-                    file.write(json.dumps(record) + '\n')
-
-        def upload_file_to_s3(file_path, bucket_name, s3_key):
-            s3_client = boto3.client('s3', region_name='us-east-1')
-            try:
-                s3_client.upload_file(file_path, bucket_name, s3_key)
-                print(f"File uploaded successfully to s3://{bucket_name}/{s3_key}")
-            except Exception as e:
-                print(f"Error uploading file: {e}")
-
-        def get_role_arn(role_name):
-            iam_client = boto3.client('iam')
-            response = iam_client.get_role(RoleName=role_name)
-            return response["Role"]["Arn"]
-
-        role_arn = get_role_arn("BedrockPermissionsRole")
-
-        input_data_config = {
-            "s3InputDataConfig": {
-                "s3Uri": "s3://fkkarami-projects/bedrock-batch-inference/input/input.jsonl"
-            }
-        }
-
-        output_data_config = {
-            "s3OutputDataConfig": {
-                "s3Uri": "s3://fkkarami-projects/bedrock-batch-inference/output/"
-            }
-        }
-
-        def generate_bedrock_job_name(prefix="bedrock-job"):
-            current_time = datetime.utcnow().strftime("%Y%m%d-%H%M%S")
-            job_name = f"{prefix}-{current_time}"
-            return job_name
-
-        response = bedrock_client.create_model_invocation_job(
-            roleArn=role_arn,
-            modelId="anthropic.claude-3-haiku-20240307-v1:0",
-            jobName=generate_bedrock_job_name(),
-            inputDataConfig=input_data_config,
-            outputDataConfig=output_data_config,
-        )
-
-        job_arn = response.get('jobArn')
-        print(f"Batch Inference Job ARN: {job_arn}")
-
-        def check_job_status(job_arn):
-            bedrock = boto3.client('bedrock', region_name='us-east-1')
-            while True:
-                status_response = bedrock.get_model_invocation_job(jobIdentifier=job_arn)
-                print(f"Job Status: {status_response['status']}")
-
-                if status_response['status'] in ['Completed', 'Failed', 'Stopped']:
-                    print("Job finished with status:", status_response['status'])
-                    break
-
-                time.sleep(5)
-
-        check_job_status(job_arn)
 
